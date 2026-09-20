@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Verification Applications | e-Verification</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f4ee;
+            color: #24343a;
+            font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .layout {
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 255px;
+            min-height: 100vh;
+            background: #132d3a;
+            color: #dbe5e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 31px 17px;
+            z-index: 100;
+            transform: translateX(-100%);
+            transition:
+                transform .42s cubic-bezier(.22,1,.36,1),
+                box-shadow .42s ease;
+            box-shadow: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            box-shadow: 14px 0 45px rgba(18,40,49,.16);
+        }
+
+        .sidebar-brand {
+            padding: 0 16px;
+            margin-bottom: 48px;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 19px;
+            font-weight: 650;
+            color: #ffffff;
+            letter-spacing: .2px;
+        }
+
+        .sidebar-brand p {
+            margin-top: 5px;
+            font-size: 10px;
+            color: #84979e;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-title {
+            padding: 0 16px;
+            color: #6f858e;
+            font-size: 9px;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 11px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            min-height: 44px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #aebec3;
+            border-radius: 9px;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+            transition:
+                background .25s ease,
+                color .25s ease,
+                padding-left .25s ease;
+        }
+
+        .nav a::before {
+            content: "";
+            width: 3px;
+            height: 20px;
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: transparent;
+            border-radius: 0 4px 4px 0;
+            transition: .25s ease;
+        }
+
+        .nav a:hover {
+            background: #1d3c4a;
+            color: #ffffff;
+            padding-left: 19px;
+        }
+
+        .nav a.active {
+            background: #244555;
+            color: #ffffff;
+        }
+
+        .nav a.active::before {
+            background: #4a9b8d;
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #79939b;
+            flex-shrink: 0;
+        }
+
+        .nav a.active .nav-icon {
+            color: #64ad9f;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 17px;
+            right: 17px;
+            bottom: 28px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #a9b9be;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 10px 15px;
+            border-radius: 7px;
+            transition: .2s ease;
+        }
+
+        .sidebar-bottom a:hover {
+            background: #1d3c4a;
+            color: #ffffff;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,34,42,.20);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity .35s ease,
+                visibility .35s ease;
+            backdrop-filter: blur(1px);
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .content {
+            width: 100%;
+            min-height: 100vh;
+            transform: translateX(0);
+            transition:
+                transform .42s cubic-bezier(.22,1,.36,1);
+        }
+
+        .content.sidebar-open {
+            transform: translateX(255px);
+        }
+
+        .menu-button {
+            position: absolute;
+            left: 22px;
+            top: 16px;
+            width: 40px;
+            height: 36px;
+            border: 1px solid #d9ddd8;
+            background: rgba(255,255,255,.94);
+            border-radius: 9px;
+            cursor: pointer;
+            z-index: 110;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 5px 18px rgba(36,52,58,.08);
+            transition:
+                background .25s ease,
+                border-color .25s ease,
+                transform .42s cubic-bezier(.22,1,.36,1),
+                box-shadow .25s ease;
+        }
+
+        .menu-button:hover {
+            background: #ffffff;
+            border-color: #b8c9c3;
+            box-shadow: 0 8px 22px rgba(36,52,58,.12);
+        }
+
+        .menu-button.active {
+            transform: translateX(215px);
+        }
+
+        .menu-line {
+            width: 18px;
+            height: 2px;
+            border-radius: 3px;
+            background: #29434b;
+            transition:
+                transform .3s ease,
+                opacity .25s ease;
+        }
+
+        .menu-button.active .menu-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .menu-button.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-button.active .menu-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .topbar {
+            height: 67px;
+            background: rgba(245,244,238,.96);
+            border-bottom: 1px solid #e5e2d9;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 4%;
+            position: sticky;
+            top: 0;
+            z-index: 15;
+            backdrop-filter: blur(8px);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 21px;
+        }
+
+        .workspace-label {
+            font-size: 9px;
+            color: #879196;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .user-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid #cbd9d5;
+            background: #e9f0ed;
+            color: #41796e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .main {
+            width: 92%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 38px 0 65px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .eyebrow {
+            font-size: 9px;
+            color: #718187;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .page-heading h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 35px;
+            line-height: 1.2;
+            font-weight: 400;
+            color: #22343b;
+            letter-spacing: -.8px;
+        }
+
+        .page-heading p {
+            color: #7c898e;
+            font-size: 12px;
+            margin-top: 9px;
+            line-height: 1.6;
+        }
+
+        .heading-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            min-height: 39px;
+            padding: 0 17px;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 650;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                background .2s ease,
+                border-color .2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: #3e8d81;
+            border: 1px solid #3e8d81;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #347c71;
+            border-color: #347c71;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(62,141,129,.20);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 1px solid #d8dedb;
+            color: #455a60;
+        }
+
+        .btn-secondary:hover {
+            border-color: #b8c9c3;
+            background: #f8faf8;
+            transform: translateY(-1px);
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e4e2da;
+            border-radius: 11px;
+            padding: 19px 20px;
+        }
+
+        .summary-label {
+            color: #758287;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .summary-number {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            color: #263940;
+            font-weight: 400;
+        }
+
+        .summary-text {
+            color: #8a969a;
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e4e2da;
+            border-radius: 11px;
+            overflow: hidden;
+        }
+
+        .table-head {
+            padding: 20px 21px;
+            border-bottom: 1px solid #eceae3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .table-head h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #263940;
+            font-size: 21px;
+            font-weight: 400;
+        }
+
+        .table-head p {
+            margin-top: 5px;
+            color: #899498;
+            font-size: 10px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #f0f4f2;
+            color: #65757b;
+            text-align: left;
+            padding: 14px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-top: 1px solid #ecebe5;
+            font-size: 11px;
+            color: #718087;
+        }
+
+        tbody tr {
+            transition: background .2s ease;
+        }
+
+        tbody tr:hover {
+            background: #fafbf9;
+        }
+
+        td strong {
+            color: #33464d;
+            font-weight: 600;
+        }
+
+        .application-number {
+            color: #3e8d81;
+            font-weight: 650;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: #f5eee3;
+            color: #99713b;
+        }
+
+        .scheduled {
+            background: #e8eff5;
+            color: #4a6d8a;
+        }
+
+        .in-progress {
+            background: #eeeaf4;
+            color: #68578b;
+        }
+
+        .verified {
+            background: #e7f2ed;
+            color: #3c7967;
+        }
+
+        .rejected {
+            background: #f8e8e6;
+            color: #a94d45;
+        }
+
+        .empty {
+            padding: 55px 20px;
+            text-align: center;
+            color: #7b898e;
+        }
+
+        .empty-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #edf4f1;
+            color: #438a7d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 18px;
+        }
+
+        .empty h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: #33464d;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            font-size: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #98a1a4;
+            font-size: 9px;
+            padding-top: 34px;
+        }
+
+        @media (max-width: 1050px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .content.sidebar-open {
+                transform: translateX(220px);
+            }
+
+            .menu-button.active {
+                transform: translateX(180px);
+            }
+
+            .summary-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                width: 245px;
+            }
+
+            .content.sidebar-open {
+                transform: translateX(245px);
+            }
+
+            .menu-button {
+                left: 18px;
+                top: 13px;
+            }
+
+            .menu-button.active {
+                transform: translateX(205px);
+            }
+
+            .topbar {
+                height: 62px;
+                padding: 0 20px 0 75px;
+            }
+
+            .workspace-label {
+                display: none;
+            }
+
+            .main {
+                width: 91%;
+                padding-top: 29px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .page-heading h1 {
+                font-size: 29px;
+            }
+
+            .heading-buttons {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .summary-row {
+                grid-template-columns: 1fr;
+            }
+
+            .table-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 255px;
+            }
+
+            .content.sidebar-open {
+                transform: translateX(255px);
+            }
+
+            .menu-button {
+                left: 16px;
+            }
+
+            .menu-button.active {
+                transform: translateX(215px);
+            }
+
+            .topbar {
+                padding-left: 70px;
+            }
+
+            .main {
+                width: 92%;
+            }
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+
+            .table-card {
+                border-radius: 10px;
+            }
+
+            .table-head {
+                padding: 18px 16px;
+            }
+
+            th {
+                padding: 13px;
+            }
+
+            td {
+                padding: 13px;
+            }
+
+            .empty {
+                padding: 45px 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <h2>e-Verification</h2>
+            <p>Owner Workspace</p>
+        </div>
+
+        <div class="nav-title">
+            Workspace
+        </div>
+
+        <nav class="nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span class="nav-icon">⌂</span>
+                Overview
+            </a>
+
+            <a href="{% url 'my_instruments' %}">
+                <span class="nav-icon">◉</span>
+                My Instruments
+            </a>
+
+            <a href="{% url 'verification_applications' %}" class="active">
+                <span class="nav-icon">□</span>
+                My Verification Applications
+            </a>
+
+            <a href="{% url 'apply_verification' %}">
+                <span class="nav-icon">＋</span>
+                Apply for Verification
+            </a>
+
+            <a href="{% url 'add_instrument' %}">
+                <span class="nav-icon">＋</span>
+                Register Instrument
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="{% url 'logout' %}">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="content" id="content">
+
+        <button
+            type="button"
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+        </button>
+
+        <header class="topbar">
+
+            <div class="topbar-right">
+
+                <div class="workspace-label">
+                    Owner Workspace
+                </div>
+
+                <div class="user-circle">
+                    OW
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="main">
+
+            <section class="page-heading">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Owner workspace · Verification management
+                    </div>
+
+                    <h1>
+                        My Verification Applications
+                    </h1>
+
+                    <p>
+                        Track your submitted verification applications and their current status.
+                    </p>
+
+                </div>
+
+                <div class="heading-buttons">
+
+                    <a
+                        href="{% url 'apply_verification' %}"
+                        class="btn btn-primary"
+                    >
+                        + New Application
+                    </a>
+
+                    <a
+                        href="{% url 'dashboard' %}"
+                        class="btn btn-secondary"
+                    >
+                        Dashboard
+                    </a>
+
+                </div>
+
+            </section>
+
+            <div class="summary-row">
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Total Applications
+                    </div>
+
+                    <div class="summary-number">
+                        {{ applications|length }}
+                    </div>
+
+                    <div class="summary-text">
+                        Applications submitted
+                    </div>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Verification
+                    </div>
+
+                    <div class="summary-number">
+                        Track
+                    </div>
+
+                    <div class="summary-text">
+                        Monitor application progress
+                    </div>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Workspace
+                    </div>
+
+                    <div class="summary-number">
+                        Owner
+                    </div>
+
+                    <div class="summary-text">
+                        Your verification records
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="table-card">
+
+                {% if applications %}
+
+                    <div class="table-head">
+
+                        <div>
+
+                            <h2>
+                                Application History
+                            </h2>
+
+                            <p>
+                                Your submitted verification applications are listed below.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>Application No.</th>
+                                    <th>Instrument ID</th>
+                                    <th>Instrument Type</th>
+                                    <th>Verification Type</th>
+                                    <th>Application Date</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            {% for application in applications %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong class="application-number">
+                                            {{ application.application_number }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ application.instrument.instrument_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ application.instrument.instrument_type.name }}
+                                    </td>
+
+                                    <td>
+                                        {{ application.get_verification_type_display }}
+                                    </td>
+
+                                    <td>
+                                        {{ application.application_date|date:"d M Y, h:i A" }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if application.status == 'PENDING' %}
+
+                                            <span class="status pending">
+                                                Pending
+                                            </span>
+
+                                        {% elif application.status == 'SCHEDULED' %}
+
+                                            <span class="status scheduled">
+                                                Scheduled
+                                            </span>
+
+                                        {% elif application.status == 'IN_PROGRESS' %}
+
+                                            <span class="status in-progress">
+                                                In Progress
+                                            </span>
+
+                                        {% elif application.status == 'VERIFIED' %}
+
+                                            <span class="status verified">
+                                                Verified
+                                            </span>
+
+                                        {% elif application.status == 'REJECTED' %}
+
+                                            <span class="status rejected">
+                                                Rejected
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status">
+                                                {{ application.get_status_display }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+                                                                    
+                                        {% if application.status == 'VERIFIED' %}
+                                                                    
+                                            {% if application.verification_record.certificate %}
+                                                                    
+                                                <a
+                                                    href="{% url 'certificate_detail' application.verification_record.certificate.id %}"
+                                                    class="btn"
+                                                >
+                                                    View Certificate
+                                                </a>
+                                            
+                                                <a
+                                                    href="{% url 'download_certificate' application.verification_record.certificate.id %}"
+                                                    class="btn"
+                                                >
+                                                    Download PDF
+                                                </a>
+                                            
+                                            {% else %}
+                                            
+                                                <span>
+                                                    Certificate processing...
+                                                </span>
+                                            
+                                            {% endif %}
+                                            
+                                        {% elif application.status == 'REJECTED' %}
+                                            
+                                            <span>
+                                                Verification Failed
+                                            </span>
+                                        
+                                        {% elif application.status == 'SCHEDULED' %}
+                                        
+                                            <span>
+                                                Scheduled
+                                            </span>
+                                        
+                                        {% else %}
+                                        
+                                            <span>
+                                                Pending
+                                            </span>
+                                        
+                                        {% endif %}
+                                        
+                                    </td>
+                                
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+                                
+                                    <td colspan="5">
+                                        No verification applications found.
+                                    </td>
+                                
+                                </tr>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            □
+                        </div>
+
+                        <h3>
+                            No Verification Applications
+                        </h3>
+
+                        <p>
+                            You have not submitted any verification application yet.
+                        </p>
+
+                        <a
+                            href="{% url 'apply_verification' %}"
+                            class="btn btn-primary"
+                        >
+                            Apply for Verification
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <div class="footer">
+                e-Verification System
+            </div>
+
+        </main>
+
+    </div>
+
+    {% if application.status == 'VERIFIED' %}
+
+        {% if application.verification_record.certificate %}
+
+
+        <div class="certificate-box">
+
+            <h3>
+                📜 Verification Certificate Available
+            </h3>
+
+
+            <div class="certificate-number">
+
+                Certificate No:
+                {{ application.verification_record.certificate.certificate_number }}
+
+            </div>
+
+
+            <p>
+
+                Your instrument has been successfully
+                verified by the GATC.
+
+            </p>
+
+
+            <p>
+
+                Valid Until:
+
+                <strong>
+                    {{ application.verification_record.certificate.valid_until }}
+                </strong>
+
+            </p>
+
+
+            {% if application.verification_record.certificate.pdf_file %}
+
+            <a
+                href="{% url 'download_certificate' application.verification_record.certificate.id %}"
+                class="download-btn">
+
+                📥 Download Certificate PDF
+
+            </a>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'certificate_detail' application.verification_record.certificate.id %}"
+                class="view-btn">
+
+                👁 View Certificate
+
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+    {% endif %}
+
+
+    </div>
+
+
+    
+
+
+    </div>
+
+
+</div>
+
+<script>
+    const menuButton = document.getElementById("menuButton");
+    const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("content");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+    function openSidebar() {
+        sidebar.classList.add("open");
+        content.classList.add("sidebar-open");
+        menuButton.classList.add("active");
+        sidebarOverlay.classList.add("show");
+        menuButton.setAttribute("aria-expanded", "true");
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove("open");
+        content.classList.remove("sidebar-open");
+        menuButton.classList.remove("active");
+        sidebarOverlay.classList.remove("show");
+        menuButton.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleSidebar() {
+        if (sidebar.classList.contains("open")) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+
+    menuButton.addEventListener("click", toggleSidebar);
+
+    sidebarOverlay.addEventListener("click", closeSidebar);
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && sidebar.classList.contains("open")) {
+            closeSidebar();
+        }
+    });
+
+    const navLinks = document.querySelectorAll(".nav a");
+
+    navLinks.forEach(function(link) {
+        link.addEventListener("click", function() {
+            if (window.innerWidth <= 760) {
+                closeSidebar();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

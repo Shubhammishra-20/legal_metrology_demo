@@ -1,0 +1,2796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | e-Verification</title>
+
+
+    <style>
+
+        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            background: #f5f4ee;
+            color: #24343a;
+
+            /*
+                Completely offline fonts.
+                No Google Fonts / CDN required.
+            */
+            font-family:
+                "Segoe UI",
+                "Trebuchet MS",
+                Arial,
+                sans-serif;
+
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+
+        
+
+        .layout {
+            min-height: 100vh;
+            width: 100%;
+        }
+
+
+        
+
+        .sidebar {
+            width: 255px;
+            min-height: 100vh;
+
+            background: #132d3a;
+            color: #dbe5e8;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 31px 17px;
+
+            z-index: 100;
+
+            
+            transform: translateX(-100%);
+
+            transition:
+                transform .42s cubic-bezier(.22, 1, .36, 1),
+                box-shadow .42s ease;
+
+            box-shadow: none;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+
+        .sidebar.open {
+            transform: translateX(0);
+
+            box-shadow:
+                14px 0 45px rgba(18, 40, 49, .16);
+        }
+
+
+        
+
+        .sidebar-brand {
+            padding: 0 16px;
+            margin-bottom: 48px;
+        }
+
+
+        .sidebar-brand h2 {
+            font-size: 19px;
+            font-weight: 650;
+
+            color: #ffffff;
+
+            letter-spacing: .2px;
+        }
+
+
+        .sidebar-brand p {
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            color: #84979e;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        
+
+        .nav-title {
+            padding: 0 16px;
+
+            color: #6f858e;
+
+            font-size: 9px;
+
+            letter-spacing: 1.8px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 11px;
+        }
+
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+
+        .nav a {
+            min-height: 44px;
+
+            padding: 0 15px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #aebec3;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                background .25s ease,
+                color .25s ease,
+                padding-left .25s ease,
+                transform .25s ease;
+        }
+
+
+        .nav a::before {
+            content: "";
+
+            width: 3px;
+            height: 20px;
+
+            position: absolute;
+
+            left: 0;
+            top: 12px;
+
+            background: transparent;
+
+            border-radius: 0 4px 4px 0;
+
+            transition: .25s ease;
+        }
+
+
+        .nav a:hover {
+            background: #1d3c4a;
+
+            color: #ffffff;
+
+            padding-left: 19px;
+        }
+
+
+        .nav a.active {
+            background: #244555;
+
+            color: #ffffff;
+        }
+
+
+        .nav a.active::before {
+            background: #4a9b8d;
+        }
+
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+
+            color: #79939b;
+
+            flex-shrink: 0;
+        }
+
+
+        .nav a.active .nav-icon {
+            color: #64ad9f;
+        }
+
+
+        
+
+        .sidebar-bottom {
+            position: absolute;
+
+            left: 17px;
+            right: 17px;
+
+            bottom: 28px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid rgba(255,255,255,.08);
+        }
+
+
+        .sidebar-bottom a {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: #a9b9be;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            transition: .2s ease;
+        }
+
+
+        .sidebar-bottom a:hover {
+            background: #1d3c4a;
+
+            color: #ffffff;
+        }
+
+
+        
+
+        .sidebar-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(15, 34, 42, .20);
+
+            z-index: 90;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition:
+                opacity .35s ease,
+                visibility .35s ease;
+
+            backdrop-filter: blur(1px);
+        }
+
+
+        .sidebar-overlay.show {
+            opacity: 1;
+
+            visibility: visible;
+        }
+
+
+        
+
+        .content {
+            width: 100%;
+
+            min-height: 100vh;
+
+            /*
+                Content moves right when sidebar opens.
+            */
+
+            transform: translateX(0);
+
+            transition:
+                transform .42s cubic-bezier(.22, 1, .36, 1);
+        }
+
+
+        .content.sidebar-open {
+            transform: translateX(255px);
+        }
+
+
+        
+
+        .menu-button {
+            position: fixed;
+
+            left: 22px;
+            top: 17px;
+
+            width: 40px;
+            height: 36px;
+
+            border: 1px solid #d9ddd8;
+
+            background: rgba(255,255,255,.92);
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            z-index: 110;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+            box-shadow:
+                0 5px 18px rgba(36,52,58,.08);
+
+            transition:
+                background .25s ease,
+                border-color .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
+        }
+
+
+        .menu-button:hover {
+            background: #ffffff;
+
+            border-color: #b8c9c3;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 22px rgba(36,52,58,.12);
+        }
+
+
+        .menu-line {
+            width: 18px;
+            height: 2px;
+
+            border-radius: 3px;
+
+            background: #29434b;
+
+            transition:
+                transform .3s ease,
+                opacity .25s ease,
+                width .25s ease;
+        }
+
+
+        .menu-button.active .menu-line:nth-child(1) {
+            transform:
+                translateY(7px)
+                rotate(45deg);
+        }
+
+
+        .menu-button.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+
+        .menu-button.active .menu-line:nth-child(3) {
+            transform:
+                translateY(-7px)
+                rotate(-45deg);
+        }
+
+
+        
+
+        .topbar {
+            height: 67px;
+
+            background:
+                rgba(245,244,238,.96);
+
+            border-bottom:
+                1px solid #e5e2d9;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            padding: 0 4%;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 15;
+
+            backdrop-filter: blur(8px);
+        }
+
+
+        .topbar-right {
+            display: flex;
+
+            align-items: center;
+
+            gap: 21px;
+        }
+
+
+        .district {
+            font-size: 9px;
+
+            color: #879196;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .user-circle {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            border: 1px solid #cbd9d5;
+
+            background: #e9f0ed;
+
+            color: #41796e;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        
+
+        .main {
+            width: 92%;
+
+            max-width: 1240px;
+
+            margin: 0 auto;
+
+            padding: 38px 0 65px;
+        }
+
+
+        
+
+        .heading-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .eyebrow {
+            font-size: 9px;
+
+            color: #718187;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.8px;
+
+            margin-bottom: 8px;
+
+            font-weight: 600;
+        }
+
+
+        .heading h1 {
+            /*
+                Elegant offline serif fallback.
+            */
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 37px;
+
+            line-height: 1.2;
+
+            font-weight: 400;
+
+            color: #22343b;
+
+            letter-spacing: -1px;
+        }
+
+
+        .heading p {
+            color: #7c898e;
+
+            font-size: 12px;
+
+            margin-top: 9px;
+        }
+
+
+        .heading-actions {
+            display: flex;
+
+            gap: 9px;
+
+            flex-shrink: 0;
+        }
+
+
+        .head-btn {
+            height: 38px;
+
+            padding: 0 17px;
+
+            border-radius: 20px;
+
+            border: 1px solid #deddd5;
+
+            background: #ffffff;
+
+            color: #304148;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+
+        .head-btn:hover {
+            border-color: #aebfba;
+
+            transform: translateY(-1px);
+        }
+
+
+        .head-btn.primary {
+            background: #3e8d81;
+
+            color: #ffffff;
+
+            border-color: #3e8d81;
+        }
+
+
+        .head-btn.primary:hover {
+            background: #347c71;
+        }
+
+
+        
+
+        .welcome-line {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 24px;
+
+            font-size: 11px;
+
+            color: #7c888d;
+        }
+
+
+        .welcome-line strong {
+            color: #3c4d53;
+
+            font-weight: 600;
+        }
+
+
+        .role {
+            padding: 4px 8px;
+
+            border-radius: 12px;
+
+            background: #e6efec;
+
+            color: #387469;
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+            letter-spacing: .5px;
+        }
+
+
+        
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 13px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .summary-card {
+            min-height: 145px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e2da;
+
+            border-radius: 11px;
+
+            padding: 19px 20px;
+
+            position: relative;
+
+            transition: .25s ease;
+        }
+
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 24px rgba(35,54,59,.05);
+        }
+
+
+        .summary-icon {
+            position: absolute;
+
+            right: 17px;
+            top: 17px;
+
+            width: 32px;
+            height: 32px;
+
+            border-radius: 50%;
+
+            background: #edf4f1;
+
+            color: #438a7d;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+        }
+
+
+        .summary-card.warning
+        .summary-icon {
+            background: #f7eee3;
+
+            color: #c58b4c;
+        }
+
+
+        .summary-label {
+            color: #758287;
+
+            font-size: 10px;
+
+            margin-bottom: 23px;
+        }
+
+
+        .summary-number {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            color: #20333a;
+
+            font-size: 28px;
+
+            line-height: 1;
+        }
+
+
+        .summary-note {
+            color: #8b969a;
+
+            font-size: 10px;
+
+            margin-top: 8px;
+        }
+
+
+        
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.7fr .95fr;
+
+            gap: 14px;
+
+            margin-top: 14px;
+        }
+
+
+        
+
+        .panel {
+            background: #ffffff;
+
+            border:
+                1px solid #e4e2da;
+
+            border-radius: 11px;
+
+            padding: 24px 26px;
+        }
+
+
+        .panel-head {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            margin-bottom: 20px;
+        }
+
+
+        .panel-small {
+            color: #758287;
+
+            text-transform: uppercase;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+
+        .panel-title {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 22px;
+
+            color: #263940;
+
+            font-weight: 400;
+        }
+
+
+        .trend {
+            background: #e9f2ef;
+
+            color: #3d7c70;
+
+            border-radius: 15px;
+
+            padding: 7px 10px;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+        }
+
+
+        
+
+        .chart {
+            height: 235px;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-around;
+
+            padding: 20px 6px 0;
+
+            border-bottom:
+                1px solid #e9e8e2;
+
+            position: relative;
+        }
+
+
+        .chart::before,
+        .chart::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            border-top:
+                1px dashed #eeede7;
+        }
+
+
+        .chart::before {
+            top: 35%;
+        }
+
+
+        .chart::after {
+            top: 68%;
+        }
+
+
+        .bar-group {
+            height: 100%;
+
+            width: 11%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 1;
+        }
+
+
+        .bar {
+            width: 43px;
+
+            max-width: 75%;
+
+            background: #dfeae7;
+
+            border-radius:
+                7px 7px 0 0;
+
+            position: relative;
+        }
+
+
+        .bar span {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: #438e83;
+
+            border-radius:
+                7px 7px 0 0;
+        }
+
+
+        .bar-1 {
+            height: 76px;
+        }
+
+
+        .bar-1 span {
+            height: 49px;
+        }
+
+
+        .bar-2 {
+            height: 115px;
+        }
+
+
+        .bar-2 span {
+            height: 73px;
+        }
+
+
+        .bar-3 {
+            height: 91px;
+        }
+
+
+        .bar-3 span {
+            height: 57px;
+        }
+
+
+        .bar-4 {
+            height: 147px;
+        }
+
+
+        .bar-4 span {
+            height: 98px;
+        }
+
+
+        .bar-5 {
+            height: 124px;
+        }
+
+
+        .bar-5 span {
+            height: 76px;
+        }
+
+
+        .bar-6 {
+            height: 171px;
+        }
+
+
+        .bar-6 span {
+            height: 132px;
+        }
+
+
+        .month {
+            margin-top: 8px;
+
+            color: #7d898d;
+
+            font-size: 9px;
+        }
+
+
+        .chart-legend {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 14px;
+
+            color: #778488;
+
+            font-size: 9px;
+        }
+
+
+        .legend-dot {
+            width: 6px;
+            height: 6px;
+
+            background: #438e83;
+
+            border-radius: 50%;
+        }
+
+
+        .chart-total {
+            margin-left: 12px;
+
+            color: #34484e;
+
+            font-family: monospace;
+
+            font-size: 10px;
+        }
+
+
+        
+
+        .case-panel {
+            min-height: 330px;
+        }
+
+
+        .pie-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+
+            padding: 13px 0 21px;
+
+            border-bottom:
+                1px solid #eceae3;
+        }
+
+
+        .pie {
+            width: 145px;
+            height: 145px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    #37a078 0deg 225deg,
+                    #e3a14c 225deg 295deg,
+                    #667d90 295deg 345deg,
+                    #c96d60 345deg 360deg
+                );
+
+            position: relative;
+
+            flex-shrink: 0;
+        }
+
+
+        .pie::after {
+            content: "";
+
+            position: absolute;
+
+            width: 91px;
+            height: 91px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            left: 27px;
+            top: 27px;
+        }
+
+
+        .pie-number {
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            z-index: 1;
+
+            font-family: monospace;
+
+            font-size: 19px;
+
+            font-weight: 600;
+
+            color: #24363c;
+        }
+
+
+        .status-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .status-row {
+            display: grid;
+
+            grid-template-columns:
+                8px 1fr auto;
+
+            align-items: center;
+
+            gap: 7px;
+
+            font-size: 10px;
+        }
+
+
+        .status-circle {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+        }
+
+
+        .approved {
+            background: #37a078;
+        }
+
+
+        .review {
+            background: #e3a14c;
+        }
+
+
+        .submitted {
+            background: #667d90;
+        }
+
+
+        .action {
+            background: #c96d60;
+        }
+
+
+        .status-name {
+            color: #7c898e;
+        }
+
+
+        .status-percent {
+            color: #34474d;
+
+            font-weight: 600;
+        }
+
+
+        .pass-rate {
+            padding-top: 19px;
+        }
+
+
+        .pass-label {
+            color: #78858a;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.4px;
+        }
+
+
+        .pass-value {
+            margin-top: 7px;
+
+            display: flex;
+
+            align-items: baseline;
+
+            gap: 9px;
+        }
+
+
+        .pass-value strong {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 27px;
+
+            font-weight: 400;
+
+            color: #20343b;
+        }
+
+
+        .pass-value span {
+            font-size: 10px;
+
+            color: #728187;
+        }
+
+
+        
+
+        .applications-panel {
+            margin-top: 14px;
+
+            padding-bottom: 12px;
+        }
+
+
+        .applications-list {
+            width: 100%;
+        }
+
+
+        .application-row {
+            display: grid;
+
+            grid-template-columns:
+                1.3fr 1fr .75fr .35fr;
+
+            gap: 15px;
+
+            align-items: center;
+
+            min-height: 58px;
+
+            border-top:
+                1px solid #ecebe5;
+
+            font-size: 11px;
+        }
+
+
+        .application-row.header {
+            min-height: 39px;
+
+            border-top: none;
+
+            color: #8a9599;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .application-name {
+            color: #33464d;
+
+            font-weight: 600;
+        }
+
+
+        .application-id {
+            color: #7e898e;
+        }
+
+
+        .application-status {
+            display: inline-block;
+
+            width: fit-content;
+
+            padding: 5px 9px;
+
+            border-radius: 12px;
+
+            background: #f5eee3;
+
+            color: #99713b;
+
+            font-size: 9px;
+        }
+
+
+        .verified {
+            background: #e7f2ed;
+
+            color: #3c7967;
+        }
+
+
+        .view-link {
+            color: #397c70;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+
+        .view-link:hover {
+            text-decoration: underline;
+        }
+
+
+        
+
+        .info-panel {
+            margin-top: 14px;
+
+            background: #edf3f0;
+
+            border:
+                1px solid #dbe7e3;
+
+            border-radius: 11px;
+
+            padding: 20px 24px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+
+        .info-panel h3 {
+            font-size: 13px;
+
+            color: #355c54;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+
+        .info-panel p {
+            font-size: 10px;
+
+            color: #718087;
+
+            max-width: 720px;
+
+            line-height: 1.7;
+        }
+
+
+        .info-link {
+            color: #397c70;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+
+        
+
+        .footer {
+            text-align: center;
+
+            color: #98a1a4;
+
+            font-size: 9px;
+
+            padding-top: 34px;
+        }
+
+
+        
+
+        @media (max-width: 1050px) {
+
+            .content.sidebar-open {
+                transform: translateX(220px);
+            }
+
+
+            .sidebar {
+                width: 220px;
+            }
+
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        
+
+        @media (max-width: 760px) {
+
+            .sidebar {
+                width: 245px;
+            }
+
+
+            .content.sidebar-open {
+                transform: translateX(245px);
+            }
+
+
+            .topbar {
+                height: 62px;
+
+                padding:
+                    0 20px 0 76px;
+            }
+
+
+            .menu-button {
+                left: 18px;
+
+                top: 13px;
+
+                width: 40px;
+
+                height: 36px;
+            }
+
+
+            .district {
+                display: none;
+            }
+
+
+            .main {
+                width: 91%;
+
+                padding-top: 29px;
+            }
+
+
+            .heading-row {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 20px;
+            }
+
+
+            .heading h1 {
+                font-size: 29px;
+            }
+
+
+            .heading-actions {
+                width: 100%;
+            }
+
+
+            .head-btn {
+                flex: 1;
+
+                justify-content: center;
+            }
+
+
+            .summary-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .application-row {
+                grid-template-columns:
+                    1.2fr .9fr .8fr;
+            }
+
+
+            .application-row > div:last-child {
+                display: none;
+            }
+
+
+            .info-panel {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        
+
+        @media (max-width: 480px) {
+
+            .sidebar {
+                width: 255px;
+            }
+
+
+            .content.sidebar-open {
+                transform: translateX(255px);
+            }
+
+
+            .topbar {
+                padding-left: 70px;
+            }
+
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .summary-card {
+                min-height: 120px;
+            }
+
+
+            .dashboard-grid {
+                gap: 12px;
+            }
+
+
+            .panel {
+                padding: 19px 17px;
+            }
+
+
+            .panel-title {
+                font-size: 19px;
+            }
+
+
+            .chart {
+                height: 205px;
+            }
+
+
+            .bar {
+                width: 29px;
+            }
+
+
+            .pie-area {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .application-row {
+                grid-template-columns: 1fr;
+
+                gap: 5px;
+
+                padding: 14px 0;
+            }
+
+
+            .application-row.header {
+                display: none;
+            }
+
+
+            .application-row > div:last-child {
+                display: none;
+            }
+
+
+            .heading-actions {
+                flex-direction: column;
+            }
+
+
+            .head-btn {
+                width: 100%;
+            }
+
+        }
+
+
+        
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+
+                transition-duration: .01ms !important;
+
+                animation-duration: .01ms !important;
+
+                animation-iteration-count: 1 !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="layout">
+
+
+        
+
+        <aside
+            class="sidebar"
+            id="sidebar"
+        >
+
+            <div class="sidebar-brand">
+
+                <h2>
+                    e-Verification
+                </h2>
+
+                <p>
+                    Owner Workspace
+                </p>
+
+            </div>
+
+
+            <div class="nav-title">
+                Workspace
+            </div>
+
+
+            <nav class="nav">
+
+
+                <a
+                    href="#"
+                    class="active"
+                >
+
+                    <span class="nav-icon">
+                        ⌘
+                    </span>
+
+                    Overview
+
+                </a>
+
+
+                <a
+                    href="{% url 'my_instruments' %}"
+                >
+
+                    <span class="nav-icon">
+                        ◉
+                    </span>
+
+                    My Instruments
+
+                </a>
+
+
+                <a
+                    href="{% url 'verification_applications' %}"
+                >
+
+                    <span class="nav-icon">
+                        □
+                    </span>
+
+                    My Verification Applications
+
+                </a>
+
+
+                <a
+                    href="{% url 'apply_verification' %}"
+                >
+
+                    <span class="nav-icon">
+                        ＋
+                    </span>
+
+                    Apply for Verification
+
+                </a>
+
+
+                <a
+                    href="{% url 'add_instrument' %}"
+                >
+
+                    <span class="nav-icon">
+                        ＋
+                    </span>
+
+                    Register Instrument
+
+                </a>
+
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+
+                <a href="{% url 'logout' %}">
+
+                    <span class="nav-icon">
+                        ↪
+                    </span>
+
+                    Logout
+
+                </a>
+
+
+            </div>
+
+
+        </aside>
+
+
+        
+
+        <div
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+        ></div>
+
+
+        
+
+        <div
+            class="content"
+            id="content"
+        >
+
+
+            
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+
+                <span class="menu-line"></span>
+
+                <span class="menu-line"></span>
+
+                <span class="menu-line"></span>
+
+            </button>
+
+
+            
+
+            <header class="topbar">
+
+
+                <div class="topbar-right">
+
+
+                    <div class="district">
+                        Owner Workspace
+                    </div>
+
+
+                    <div class="user-circle">
+                        OW
+                    </div>
+
+
+                </div>
+
+
+            </header>
+
+
+            
+
+            <main class="main">
+
+
+                
+
+                <section class="heading-row">
+
+
+                    <div class="heading">
+
+
+                        <div class="eyebrow">
+
+                            Operations overview · 18 June 2024
+
+                        </div>
+
+
+                        <h1>
+
+                            Good morning,
+                            {{ request.user.get_full_name|default:request.user.username }}.
+
+                        </h1>
+
+
+                        <p>
+
+                            A clear view of your instruments and verification applications.
+
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="heading-actions">
+
+
+                        <a
+                            href="{% url 'verification_applications' %}"
+                            class="head-btn"
+                        >
+
+                            View application queue
+
+                            <span>
+                                ↗
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'add_instrument' %}"
+                            class="head-btn primary"
+                        >
+
+                            Register instrument
+
+                            <span>
+                                ＋
+                            </span>
+
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+                
+
+                <div class="welcome-line">
+
+
+                    Welcome,
+
+
+                    <strong>
+
+                        {{ request.user.get_full_name|default:request.user.username }}
+
+                    </strong>
+
+
+                    <span class="role">
+
+                        {{ role }}
+
+                    </span>
+
+
+                </div>
+
+
+                
+
+                <section class="summary-grid">
+
+
+                    <div class="summary-card">
+
+
+                        <div class="summary-icon">
+                            ◔
+                        </div>
+
+
+                        <div class="summary-label">
+                            Registered instruments
+                        </div>
+
+
+                        <div class="summary-number">
+                            03
+                        </div>
+
+
+                        <div class="summary-note">
+                            Instruments registered
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="summary-card">
+
+
+                        <div class="summary-icon">
+                            ◧
+                        </div>
+
+
+                        <div class="summary-label">
+                            Verification requests
+                        </div>
+
+
+                        <div class="summary-number">
+                            02
+                        </div>
+
+
+                        <div class="summary-note">
+                            Applications submitted
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="summary-card">
+
+
+                        <div class="summary-icon">
+                            □
+                        </div>
+
+
+                        <div class="summary-label">
+                            Pending requests
+                        </div>
+
+
+                        <div class="summary-number">
+                            01
+                        </div>
+
+
+                        <div class="summary-note">
+                            Awaiting verification
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="summary-card warning">
+
+
+                        <div class="summary-icon">
+                            ▣
+                        </div>
+
+
+                        <div class="summary-label">
+                            Verified instruments
+                        </div>
+
+
+                        <div class="summary-number">
+                            02
+                        </div>
+
+
+                        <div class="summary-note">
+                            Currently verified
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                
+
+                <section class="dashboard-grid">
+
+
+                    
+
+                    <div class="panel">
+
+
+                        <div class="panel-head">
+
+
+                            <div>
+
+
+                                <div class="panel-small">
+                                    Throughput
+                                </div>
+
+
+                                <div class="panel-title">
+                                    Applications received
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="trend">
+
+                                +12.8%
+                                &nbsp;
+                                vs last period
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="chart">
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-1">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    Apr
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-2">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    May
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-3">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    Jun
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-4">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    Jul
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-5">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    Aug
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="bar-group">
+
+
+                                <div class="bar bar-6">
+                                    <span></span>
+                                </div>
+
+
+                                <div class="month">
+                                    Sep
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="chart-legend">
+
+
+                            <span class="legend-dot"></span>
+
+
+                            Applications submitted
+
+
+                            <span class="chart-total">
+
+                                Jun total: 19
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    
+
+                    <div class="panel case-panel">
+
+
+                        <div class="panel-head">
+
+
+                            <div>
+
+
+                                <div class="panel-small">
+                                    Case mix
+                                </div>
+
+
+                                <div class="panel-title">
+                                    Application status
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="pie-area">
+
+
+                            <div class="pie">
+
+
+                                <div class="pie-number">
+                                    100
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="status-list">
+
+
+                                <div class="status-row">
+
+
+                                    <span class="status-circle approved"></span>
+
+
+                                    <span class="status-name">
+                                        Approved
+                                    </span>
+
+
+                                    <span class="status-percent">
+                                        8%
+                                    </span>
+
+
+                                </div>
+
+
+                                <div class="status-row">
+
+
+                                    <span class="status-circle review"></span>
+
+
+                                    <span class="status-name">
+                                        In review
+                                    </span>
+
+
+                                    <span class="status-percent">
+                                        4%
+                                    </span>
+
+
+                                </div>
+
+
+                                <div class="status-row">
+
+
+                                    <span class="status-circle submitted"></span>
+
+
+                                    <span class="status-name">
+                                        Submitted
+                                    </span>
+
+
+                                    <span class="status-percent">
+                                        2%
+                                    </span>
+
+
+                                </div>
+
+
+                                <div class="status-row">
+
+
+                                    <span class="status-circle action"></span>
+
+
+                                    <span class="status-name">
+                                        Needs action
+                                    </span>
+
+
+                                    <span class="status-percent">
+                                        1%
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="pass-rate">
+
+
+                            <div class="pass-label">
+                                Pass rate
+                            </div>
+
+
+                            <div class="pass-value">
+
+
+                                <strong>
+                                    86%
+                                </strong>
+
+
+                                <span>
+                                    Healthy verification signal
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                
+
+                <section class="panel applications-panel">
+
+
+                    <div class="panel-head">
+
+
+                        <div>
+
+
+                            <div class="panel-small">
+                                Recent applications
+                            </div>
+
+
+                            <div class="panel-title">
+                                Verification Applications
+                            </div>
+
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'verification_applications' %}"
+                            class="view-link"
+                        >
+
+                            View all
+
+                        </a>
+
+
+                    </div>
+
+
+                    <div class="applications-list">
+
+
+                        <div class="application-row header">
+
+
+                            <div>
+                                Instrument
+                            </div>
+
+
+                            <div>
+                                Application
+                            </div>
+
+
+                            <div>
+                                Status
+                            </div>
+
+
+                            <div>
+                                Action
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="application-row">
+
+
+                            <div class="application-name">
+                                Digital Weighing Scale
+                            </div>
+
+
+                            <div class="application-id">
+                                Application #EV-1024
+                            </div>
+
+
+                            <div>
+
+                                <span class="application-status">
+                                    Under Review
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <a
+                                    href="{% url 'verification_applications' %}"
+                                    class="view-link"
+                                >
+                                    View
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="application-row">
+
+
+                            <div class="application-name">
+                                Electronic Weighing Machine
+                            </div>
+
+
+                            <div class="application-id">
+                                Application #EV-1019
+                            </div>
+
+
+                            <div>
+
+                                <span class="application-status verified">
+                                    Verified
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <a
+                                    href="{% url 'verification_applications' %}"
+                                    class="view-link"
+                                >
+                                    View
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="application-row">
+
+
+                            <div class="application-name">
+                                Platform Weighing Scale
+                            </div>
+
+
+                            <div class="application-id">
+                                Application #EV-1016
+                            </div>
+
+
+                            <div>
+
+                                <span class="application-status">
+                                    Under Review
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <a
+                                    href="{% url 'verification_applications' %}"
+                                    class="view-link"
+                                >
+                                    View
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="application-row">
+
+
+                            <div class="application-name">
+                                Electronic Balance
+                            </div>
+
+
+                            <div class="application-id">
+                                Application #EV-1011
+                            </div>
+
+
+                            <div>
+
+                                <span class="application-status verified">
+                                    Verified
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <a
+                                    href="{% url 'verification_applications' %}"
+                                    class="view-link"
+                                >
+                                    View
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                
+
+                <section class="info-panel">
+
+
+                    <div>
+
+
+                        <h3>
+                            Before submitting a verification request
+                        </h3>
+
+
+                        <p>
+
+                            Make sure your instrument details are correct and the required information is available.
+                            After submitting an application, you can monitor its progress from the Verification Applications section.
+
+                        </p>
+
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'apply_verification' %}"
+                        class="info-link"
+                    >
+
+                        Apply for verification →
+
+                    </a>
+
+
+                </section>
+
+
+                
+
+                <div class="footer">
+
+                    e-Verification System
+
+                </div>
+
+
+            </main>
+
+
+        </div>
+
+
+    </div>
+
+
+    
+
+    <script>
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const content =
+            document.getElementById("content");
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const sidebarOverlay =
+            document.getElementById("sidebarOverlay");
+
+
+        function openSidebar() {
+
+            sidebar.classList.add("open");
+
+            content.classList.add("sidebar-open");
+
+            menuButton.classList.add("active");
+
+            sidebarOverlay.classList.add("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("open");
+
+            content.classList.remove("sidebar-open");
+
+            menuButton.classList.remove("active");
+
+            sidebarOverlay.classList.remove("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        function toggleSidebar() {
+
+            if (
+                sidebar.classList.contains("open")
+            ) {
+
+                closeSidebar();
+
+            } else {
+
+                openSidebar();
+
+            }
+
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            toggleSidebar
+        );
+
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+
+        /*
+            ESC key also closes the sidebar.
+        */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape" &&
+                    sidebar.classList.contains("open")
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        /*
+            Automatically close sidebar after
+            clicking a navigation link on mobile.
+        */
+
+        const navLinks =
+            document.querySelectorAll(
+                ".nav a"
+            );
+
+
+        navLinks.forEach(
+            function(link) {
+
+                link.addEventListener(
+                    "click",
+                    function() {
+
+                        if (
+                            window.innerWidth <= 760
+                        ) {
+
+                            closeSidebar();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

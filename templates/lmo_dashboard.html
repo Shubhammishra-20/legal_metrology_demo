@@ -1,0 +1,1930 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LMO Dashboard | e-Verification</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eeeee8;
+            color: #263b40;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #263b40;
+
+            color: white;
+
+            padding: 28px 18px;
+
+            transform: translateX(-100%);
+
+            transition:
+                transform 0.32s ease;
+
+            z-index: 1000;
+
+            box-shadow:
+                7px 0 25px rgba(0, 0, 0, 0.16);
+
+            overflow-y: auto;
+        }
+
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+
+        .sidebar-header {
+            padding: 5px 12px 24px;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.12);
+        }
+
+
+        .sidebar-header h2 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 25px;
+
+            font-weight: normal;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .sidebar-header p {
+            margin-top: 7px;
+
+            font-size: 12px;
+
+            color: #b9ccca;
+        }
+
+
+        .nav-title {
+            margin: 25px 12px 10px;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.4px;
+
+            color: #8fa8a5;
+        }
+
+
+        .nav a {
+            display: block;
+
+            text-decoration: none;
+
+            color: #dbe5e4;
+
+            padding: 12px 14px;
+
+            margin-bottom: 5px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                padding-left 0.2s ease;
+        }
+
+
+        .nav a:hover {
+            background: #314b50;
+
+            color: white;
+
+            padding-left: 17px;
+        }
+
+
+        .nav a.active {
+            background: #3e8d81;
+
+            color: white;
+
+            box-shadow:
+                0 4px 12px rgba(62, 141, 129, 0.18);
+        }
+
+
+        .review-nav {
+            background:
+                rgba(62, 141, 129, 0.12);
+
+            border:
+                1px solid rgba(62, 141, 129, 0.22);
+        }
+
+
+        .logout-link {
+            margin-top: 22px !important;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.14);
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .content {
+            min-height: 100vh;
+
+            transition:
+                transform 0.32s ease;
+        }
+
+
+        .content.sidebar-open {
+            transform: translateX(250px);
+        }
+
+
+        /* =====================================================
+           BLUR OVERLAY
+           
+           IMPORTANT:
+           This is BELOW the menu button.
+        ===================================================== */
+
+        .overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(20, 35, 38, 0.25);
+
+            backdrop-filter:
+                blur(4px);
+
+            -webkit-backdrop-filter:
+                blur(4px);
+
+            z-index: 900;
+        }
+
+
+        .overlay.show {
+            display: block;
+        }
+
+
+        /* =====================================================
+           MENU / X BUTTON
+
+           It is completely outside the content layer,
+           so it will NEVER become blurred.
+        ===================================================== */
+
+        .menu-button {
+            position: fixed;
+
+            top: 20px;
+            left: 20px;
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #263b40;
+
+            color: white;
+
+            cursor: pointer;
+
+            z-index: 1300;
+
+            font-size: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition:
+                left 0.32s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                border-radius 0.2s ease;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.16);
+        }
+
+
+        .menu-button:hover {
+            background: #3e8d81;
+        }
+
+
+        /*
+           When sidebar opens, button moves exactly
+           beside the sidebar.
+        */
+
+        .menu-button.active {
+            left: 260px;
+
+            background: #3e8d81;
+
+            color: white;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.20);
+
+            border-radius: 7px;
+        }
+
+
+        .menu-button.active:hover {
+            background: #34796f;
+        }
+
+
+        .menu-button .close {
+            display: none;
+
+            font-size: 27px;
+
+            line-height: 1;
+
+            font-weight: normal;
+        }
+
+
+        .menu-button.active .menu {
+            display: none;
+        }
+
+
+        .menu-button.active .close {
+            display: block;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            background: #ffffff;
+
+            border-bottom:
+                1px solid #dfe4e1;
+
+            padding:
+                18px 35px 18px 85px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            min-height: 80px;
+
+            box-shadow:
+                0 1px 4px rgba(38, 59, 64, 0.03);
+        }
+
+
+        .topbar-title h1 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 25px;
+
+            font-weight: normal;
+
+            color: #263b40;
+        }
+
+
+        .topbar-title p {
+            margin-top: 5px;
+
+            font-size: 13px;
+
+            color: #71807f;
+        }
+
+
+        /* =====================================================
+           USER
+        ===================================================== */
+
+        .user-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .user-circle {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #e4efec;
+
+            color: #36786e;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            border:
+                1px solid #d7e6e2;
+        }
+
+
+        .user-details strong {
+            display: block;
+
+            font-size: 14px;
+
+            color: #263b40;
+        }
+
+
+        .user-details span {
+            display: block;
+
+            font-size: 11px;
+
+            color: #7b8988;
+
+            margin-top: 3px;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            padding: 35px;
+
+            max-width: 1450px;
+
+            margin: auto;
+        }
+
+
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+
+        .welcome h2 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 29px;
+
+            font-weight: normal;
+
+            color: #263b40;
+        }
+
+
+        .welcome p {
+            margin-top: 7px;
+
+            color: #74817f;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .stat-card {
+            background: #ffffff;
+
+            border:
+                1px solid #dfe4e1;
+
+            border-radius: 9px;
+
+            padding: 22px;
+
+            min-height: 120px;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+
+            border-color: #ccd8d5;
+
+            box-shadow:
+                0 7px 18px rgba(38, 59, 64, 0.07);
+        }
+
+
+        .stat-card h3 {
+            font-size: 30px;
+
+            font-weight: 600;
+
+            color: #263b40;
+
+            margin-bottom: 9px;
+        }
+
+
+        .stat-card p {
+            font-size: 13px;
+
+            color: #74817f;
+        }
+
+
+        /* =====================================================
+           ACTIVITY BOX
+        ===================================================== */
+
+        .activity-box {
+            background: #ffffff;
+
+            border:
+                1px solid #dfe4e1;
+
+            border-radius: 9px;
+
+            padding: 22px;
+
+            margin-bottom: 28px;
+
+            box-shadow:
+                0 2px 8px rgba(38, 59, 64, 0.025);
+        }
+
+
+        .activity-box h2 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            color: #263b40;
+
+            margin-bottom: 18px;
+        }
+
+
+        .activity-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .activity-item {
+            background: #f6f7f5;
+
+            border:
+                1px solid #e2e7e4;
+
+            border-radius: 7px;
+
+            padding: 17px;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .activity-item:hover {
+            background: #f2f5f3;
+
+            transform: translateY(-2px);
+        }
+
+
+        .activity-item h3 {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #3e6f67;
+
+            margin-bottom: 6px;
+        }
+
+
+        .activity-item p {
+            font-size: 12px;
+
+            color: #788583;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           APPLICATION CARD
+        ===================================================== */
+
+        .application-card {
+            background: #ffffff;
+
+            border:
+                1px solid #dfe4e1;
+
+            border-radius: 9px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 2px 8px rgba(38, 59, 64, 0.025);
+        }
+
+
+        .card-header {
+            padding: 22px 24px;
+
+            border-bottom:
+                1px solid #e3e7e5;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .card-header h2 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            color: #263b40;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            gap: 8px;
+        }
+
+
+        .btn {
+            text-decoration: none;
+
+            padding: 9px 15px;
+
+            border-radius: 6px;
+
+            font-size: 12px;
+
+            display: inline-block;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .dashboard-btn {
+            background: #edf3f1;
+
+            color: #326e65;
+        }
+
+
+        .dashboard-btn:hover {
+            background: #dfeae7;
+        }
+
+
+        .logout-btn {
+            background: #f5eaea;
+
+            color: #a34e4e;
+        }
+
+
+        .logout-btn:hover {
+            background: #eedcdc;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1050px;
+        }
+
+
+        th {
+            background: #f6f7f5;
+
+            color: #697674;
+
+            text-align: left;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+
+            padding: 14px 18px;
+
+            border-bottom:
+                1px solid #dfe4e1;
+
+            white-space: nowrap;
+        }
+
+
+        td {
+            padding: 16px 18px;
+
+            border-bottom:
+                1px solid #edf0ef;
+
+            font-size: 13px;
+
+            color: #465351;
+
+            white-space: nowrap;
+        }
+
+
+        tbody tr {
+            transition:
+                background 0.15s ease;
+        }
+
+
+        tbody tr:hover {
+            background: #fafcfb;
+        }
+
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        .application-number {
+            font-weight: bold;
+
+            color: #34786e;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .status-pending {
+            background: #fff3df;
+
+            color: #9a681e;
+        }
+
+
+        .status-scheduled {
+            background: #e7f0f8;
+
+            color: #456b8b;
+        }
+
+
+        .status-progress {
+            background: #eee9f7;
+
+            color: #6d578b;
+        }
+
+
+        .status-verified {
+            background: #e4f1e8;
+
+            color: #477754;
+        }
+
+
+        .status-rejected {
+            background: #f7e6e6;
+
+            color: #a34e4e;
+        }
+
+
+        /* =====================================================
+           REVIEW BUTTON
+        ===================================================== */
+
+        .review-btn {
+            display: inline-block;
+
+            padding: 8px 13px;
+
+            background: #3e8d81;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .review-btn:hover {
+            background: #32766c;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 4px 9px rgba(62, 141, 129, 0.18);
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+            text-align: center;
+
+            padding: 60px 20px;
+        }
+
+
+        .empty h3 {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            color: #344846;
+
+            margin-bottom: 8px;
+        }
+
+
+        .empty p {
+            color: #7b8886;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .activity-list {
+                grid-template-columns: 1fr;
+            }
+
+
+            .topbar {
+                padding-right: 25px;
+            }
+
+
+            .page {
+                padding:
+                    28px 25px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                padding:
+                    75px 20px 20px;
+
+                display: block;
+            }
+
+
+            .user-box {
+                margin-top: 15px;
+            }
+
+
+            .page {
+                padding:
+                    25px 18px;
+            }
+
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+
+            .card-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .actions {
+                width: 100%;
+            }
+
+
+            .actions .btn {
+                flex: 1;
+
+                text-align: center;
+            }
+
+
+            .menu-button {
+                top: 15px;
+
+                left: 15px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 480px) {
+
+            .sidebar {
+                width: 235px;
+            }
+
+
+            .content.sidebar-open {
+                transform:
+                    translateX(235px);
+            }
+
+
+            .menu-button {
+                top: 15px;
+
+                left: 15px;
+            }
+
+
+            .menu-button.active {
+                left: 195px;
+            }
+
+
+            .topbar-title h1 {
+                font-size: 22px;
+            }
+
+
+            .welcome h2 {
+                font-size: 25px;
+            }
+
+
+            .stat-card {
+                min-height: 105px;
+            }
+
+
+            .stat-card h3 {
+                font-size: 27px;
+            }
+
+
+            .card-header {
+                padding: 19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar">
+
+
+        <div class="sidebar-header">
+
+            <h2>
+                e-Verification
+            </h2>
+
+            <p>
+                LMO Workspace
+            </p>
+
+        </div>
+
+
+        <div class="nav-title">
+            Verification
+        </div>
+
+
+        <nav class="nav">
+
+
+            <a
+                href="#overview"
+                class="active">
+
+                Overview
+
+            </a>
+
+
+            <a href="#applications">
+
+                Verification Applications
+
+            </a>
+
+
+            <!--
+                This uses the SAME URL pattern as the
+                Review button from the recent applications table.
+
+                It opens the first recent application's
+                review page.
+            -->
+
+            {% if recent_applications %}
+
+                {% with recent_applications|first as first_application %}
+
+                    <a
+                        href="{% url 'review_application' first_application.id %}"
+                        class="review-nav">
+
+                        Review Applications
+
+                    </a>
+
+                {% endwith %}
+
+            {% else %}
+
+                <a
+                    href="#applications"
+                    class="review-nav">
+
+                    Review Applications
+
+                </a>
+
+            {% endif %}
+
+
+            <a href="#pending">
+
+                Pending Review
+
+            </a>
+
+
+            <a href="#scheduled">
+
+                Scheduled
+
+            </a>
+
+
+            <a href="#progress">
+
+                In Progress
+
+            </a>
+
+
+            <a href="#verified">
+
+                Verified Records
+
+            </a>
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="logout-link">
+
+                Logout
+
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         BLUR OVERLAY
+    ===================================================== -->
+
+    <div
+        class="overlay"
+        id="sidebarOverlay">
+    </div>
+
+
+
+    <!-- =====================================================
+         MENU BUTTON
+
+         IMPORTANT:
+         This button is OUTSIDE .content.
+
+         Therefore backdrop-filter will never blur it.
+    ===================================================== -->
+
+    <button
+        class="menu-button"
+        id="menuButton"
+        aria-label="Open menu"
+        aria-expanded="false">
+
+        <span class="menu">
+            ☰
+        </span>
+
+        <span class="close">
+            ×
+        </span>
+
+    </button>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <div
+        class="content"
+        id="content">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================= -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-title">
+
+                <h1>
+                    LMO Dashboard
+                </h1>
+
+                <p>
+                    Online Verification System for Weighing & Measuring Instruments
+                </p>
+
+            </div>
+
+
+            <div class="user-box">
+
+
+                <div class="user-circle">
+                    LM
+                </div>
+
+
+                <div class="user-details">
+
+                    <strong>
+
+                        {{ request.user.get_full_name|default:request.user.username }}
+
+                    </strong>
+
+
+                    <span>
+                        Legal Metrology Officer
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE
+        ================================================= -->
+
+        <main
+            class="page"
+            id="overview">
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================= -->
+
+            <div class="welcome">
+
+                <h2>
+                    Welcome to LMO Dashboard
+                </h2>
+
+
+                <p>
+                    Manage verification applications and monitor
+                    instrument verification activities.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================= -->
+
+            <section class="stats">
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        {{ total_applications }}
+                    </h3>
+
+                    <p>
+                        Total Applications
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="stat-card"
+                    id="pending">
+
+                    <h3>
+                        {{ pending_applications }}
+                    </h3>
+
+                    <p>
+                        Pending Review
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="stat-card"
+                    id="scheduled">
+
+                    <h3>
+                        {{ scheduled_applications }}
+                    </h3>
+
+                    <p>
+                        Scheduled
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="stat-card"
+                    id="progress">
+
+                    <h3>
+                        {{ in_progress_applications }}
+                    </h3>
+
+                    <p>
+                        In Progress
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    class="stat-card"
+                    id="verified">
+
+                    <h3>
+                        {{ verified_applications }}
+                    </h3>
+
+                    <p>
+                        Verified
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        {{ rejected_applications }}
+                    </h3>
+
+                    <p>
+                        Rejected
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TODAY'S ACTIVITY
+            ================================================= -->
+
+            <section class="activity-box">
+
+
+                <h2>
+                    Today's Activity
+                </h2>
+
+
+                <div class="activity-list">
+
+
+                    <div class="activity-item">
+
+                        <h3>
+                            Application Review
+                        </h3>
+
+                        <p>
+                            Review pending verification applications
+                            submitted by instrument owners.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="activity-item">
+
+                        <h3>
+                            Verification Monitoring
+                        </h3>
+
+                        <p>
+                            Monitor scheduled and ongoing instrument
+                            verification activities.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="activity-item">
+
+                        <h3>
+                            Verification Records
+                        </h3>
+
+                        <p>
+                            Check completed verification activities
+                            and maintain official records.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RECENT APPLICATIONS
+            ================================================= -->
+
+            <section
+                class="application-card"
+                id="applications">
+
+
+                <div class="card-header">
+
+
+                    <h2>
+                        Recent Verification Applications
+                    </h2>
+
+
+                    <div class="actions">
+
+
+                        <a
+                            href="{% url 'dashboard' %}"
+                            class="btn dashboard-btn">
+
+                            Dashboard
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="btn logout-btn">
+
+                            Logout
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                {% if recent_applications %}
+
+
+                    <div class="table-wrapper">
+
+
+                        <table>
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Application No.
+                                    </th>
+
+                                    <th>
+                                        Instrument
+                                    </th>
+
+                                    <th>
+                                        Type
+                                    </th>
+
+                                    <th>
+                                        Owner
+                                    </th>
+
+                                    <th>
+                                        Verification
+                                    </th>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            <tbody>
+
+
+                                {% for application in recent_applications %}
+
+
+                                    <tr>
+
+
+                                        <td>
+
+                                            <span
+                                                class="application-number">
+
+                                                {{ application.application_number }}
+
+                                            </span>
+
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {{ application.instrument.instrument_id }}
+
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {{ application.instrument.instrument_type.name }}
+
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {{ application.instrument.owner.username }}
+
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {{ application.get_verification_type_display }}
+
+                                        </td>
+
+
+
+                                        <td>
+
+                                            {{ application.application_date|date:"d M Y, h:i A" }}
+
+                                        </td>
+
+
+
+                                        <td>
+
+
+                                            {% if application.status == 'PENDING' %}
+
+                                                <span
+                                                    class="status status-pending">
+
+                                                    Pending
+
+                                                </span>
+
+
+                                            {% elif application.status == 'SCHEDULED' %}
+
+                                                <span
+                                                    class="status status-scheduled">
+
+                                                    Scheduled
+
+                                                </span>
+
+
+                                            {% elif application.status == 'IN_PROGRESS' %}
+
+                                                <span
+                                                    class="status status-progress">
+
+                                                    In Progress
+
+                                                </span>
+
+
+                                            {% elif application.status == 'VERIFIED' %}
+
+                                                <span
+                                                    class="status status-verified">
+
+                                                    Verified
+
+                                                </span>
+
+
+                                            {% elif application.status == 'REJECTED' %}
+
+                                                <span
+                                                    class="status status-rejected">
+
+                                                    Rejected
+
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        </td>
+
+
+
+                                        <td>
+
+
+                                            <!--
+                                                THIS IS THE ORIGINAL
+                                                REVIEW BUTTON URL.
+                                            -->
+
+                                            <a
+                                                href="{% url 'review_application' application.id %}"
+                                                class="review-btn">
+
+                                                Review
+
+                                            </a>
+
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="empty">
+
+
+                        <h3>
+                            No Verification Applications
+                        </h3>
+
+
+                        <p>
+                            There are currently no verification
+                            applications in the system.
+                        </p>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+
+        const content =
+            document.getElementById("content");
+
+
+        const sidebarOverlay =
+            document.getElementById("sidebarOverlay");
+
+
+
+        function openSidebar() {
+
+            sidebar.classList.add("open");
+
+            content.classList.add("sidebar-open");
+
+            menuButton.classList.add("active");
+
+            sidebarOverlay.classList.add("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("open");
+
+            content.classList.remove("sidebar-open");
+
+            menuButton.classList.remove("active");
+
+            sidebarOverlay.classList.remove("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+
+        function toggleSidebar() {
+
+            if (
+                sidebar.classList.contains("open")
+            ) {
+
+                closeSidebar();
+
+            }
+
+            else {
+
+                openSidebar();
+
+            }
+
+        }
+
+
+
+        menuButton.addEventListener(
+            "click",
+            toggleSidebar
+        );
+
+
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+
+        const navLinks =
+            document.querySelectorAll(".nav a");
+
+
+
+        navLinks.forEach(
+            function(link) {
+
+                link.addEventListener(
+                    "click",
+                    function() {
+
+                        if (
+                            window.innerWidth <= 700
+                        ) {
+
+                            closeSidebar();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

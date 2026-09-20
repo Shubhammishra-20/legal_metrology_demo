@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | e-Verification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7f8;
+            color: #273238;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .topbar {
+            height: 68px;
+            background: #ffffff;
+            border-bottom: 1px solid #dfe4e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            color: #20564d;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: .2px;
+        }
+
+        .brand span {
+            color: #7b858a;
+            font-weight: 400;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .portal-status {
+            font-size: 12px;
+            color: #657177;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: #3b8a67;
+            border-radius: 50%;
+        }
+
+        .logout-top {
+            text-decoration: none;
+            color: #59656b;
+            border: 1px solid #d8dfe2;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .logout-top:hover {
+            background: #f5f6f6;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 88%;
+            max-width: 1150px;
+            margin: 35px auto 60px;
+        }
+
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            font-weight: 600;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #788288;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           USER BAR
+        ========================= */
+
+        .user-bar {
+            background: #ffffff;
+            border: 1px solid #dfe4e6;
+            border-radius: 7px;
+            padding: 17px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #737e83;
+        }
+
+        .user-name strong {
+            color: #263238;
+            font-size: 15px;
+        }
+
+        .role {
+            background: #edf4f2;
+            color: #285f55;
+            border: 1px solid #d6e6e1;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .3px;
+        }
+
+
+        /* =========================
+           OWNER INTRO
+        ========================= */
+
+        .intro-card {
+            background: #ffffff;
+            border: 1px solid #dfe4e6;
+            border-left: 4px solid #2b665b;
+            padding: 23px 25px;
+            border-radius: 7px;
+            margin-bottom: 24px;
+        }
+
+        .intro-card h2 {
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #263238;
+        }
+
+        .intro-card p {
+            font-size: 13px;
+            color: #747f84;
+            max-width: 750px;
+        }
+
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #344047;
+            margin-bottom: 12px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 13px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #dfe4e6;
+            border-radius: 7px;
+            padding: 19px;
+            min-height: 112px;
+            transition: .2s ease;
+        }
+
+        .summary-card:hover {
+            border-color: #c4d4d0;
+            transform: translateY(-2px);
+        }
+
+        .summary-label {
+            color: #7b858a;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .summary-number {
+            color: #263238;
+            font-size: 27px;
+            font-weight: 600;
+        }
+
+        .summary-note {
+            font-size: 11px;
+            color: #899298;
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           MAIN GRID
+        ========================= */
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.45fr .8fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #dfe4e6;
+            border-radius: 7px;
+            padding: 24px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #303b41;
+        }
+
+        .panel-header span {
+            color: #8a9499;
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           RECENT ACTIVITY
+        ========================= */
+
+        .activity {
+            display: flex;
+            gap: 13px;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f1;
+        }
+
+        .activity:last-child {
+            border-bottom: none;
+        }
+
+        .activity-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #edf4f2;
+            color: #286257;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .activity-content strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #39444a;
+        }
+
+        .activity-content small {
+            color: #899298;
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            border: 1px solid #dfe4e6;
+            border-radius: 5px;
+            padding: 13px 14px;
+            color: #354249;
+            font-size: 13px;
+            background: #fafbfb;
+            transition: .2s ease;
+        }
+
+        .quick-action:hover {
+            background: #f1f6f4;
+            border-color: #bdd1cc;
+            color: #22594f;
+        }
+
+        .arrow {
+            color: #9aa3a7;
+        }
+
+
+        /* =========================
+           APPLICATION AREA
+        ========================= */
+
+        .application-panel {
+            background: #ffffff;
+            border: 1px solid #dfe4e6;
+            border-radius: 7px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .application-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr .8fr .7fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px 5px;
+            border-top: 1px solid #edf0f1;
+            font-size: 13px;
+        }
+
+        .application-row.header {
+            border-top: none;
+            padding-top: 0;
+            color: #8a9499;
+            font-size: 11px;
+        }
+
+        .application-name {
+            color: #36434a;
+            font-weight: 500;
+        }
+
+        .application-id {
+            color: #7b858a;
+        }
+
+        .application-status {
+            display: inline-block;
+            width: fit-content;
+            padding: 4px 9px;
+            border-radius: 4px;
+            background: #f5f1e7;
+            color: #8a6b2d;
+            font-size: 10px;
+        }
+
+        .view-link {
+            color: #276257;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .view-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           INFORMATION BOX
+        ========================= */
+
+        .info-box {
+            background: #f0f5f4;
+            border: 1px solid #d6e4e1;
+            border-radius: 7px;
+            padding: 20px 23px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h3 {
+            color: #315c54;
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .info-box p {
+            color: #657177;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           BOTTOM LOGOUT
+        ========================= */
+
+        .bottom-area {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .logout {
+            color: #a04b4b;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            color: #9aa3a7;
+            font-size: 11px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e6e8;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .application-row {
+                grid-template-columns: 1.3fr 1fr .8fr;
+            }
+
+            .application-row .view-link {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                padding: 0 5%;
+            }
+
+            .portal-status {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                margin-top: 25px;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+
+            .user-bar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .summary-card {
+                padding: 15px;
+            }
+
+            .summary-number {
+                font-size: 23px;
+            }
+
+            .panel,
+            .application-panel {
+                padding: 18px;
+            }
+
+            .application-row {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                padding: 13px 2px;
+            }
+
+            .application-row.header {
+                display: none;
+            }
+
+            .application-status {
+                margin-top: 4px;
+            }
+
+        }
+
+
+        @media (max-width: 390px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
+
+            .logout-top {
+                padding: 7px 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+        e-Verification <span>Portal</span>
+    </div>
+
+    <div class="top-right">
+
+        <div class="portal-status">
+            <span class="status-dot"></span>
+            Portal Active
+        </div>
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout-top"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- =========================
+         WELCOME
+    ========================= -->
+
+    <section class="welcome">
+
+        <h1>
+            e-Verification Dashboard
+        </h1>
+
+        <p>
+            Manage your instruments and verification applications.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         USER INFORMATION
+    ========================= -->
+
+    <div class="user-bar">
+
+        <div class="user-name">
+
+            Welcome,
+            <strong>
+                {{ request.user.get_full_name|default:request.user.username }}
+            </strong>
+
+        </div>
+
+        <div>
+
+            Role:
+
+            <span class="role">
+                {{ role }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    {% if role == 'OWNER' %}
+
+
+        <!-- =========================
+             OWNER INTRO
+        ========================= -->
+
+        <section class="intro-card">
+
+            <h2>
+                Owner Dashboard
+            </h2>
+
+            <p>
+                Manage your registered weighing and measuring instruments,
+                submit verification requests and keep track of your
+                verification applications from one place.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             SUMMARY
+        ========================= -->
+
+        <div class="section-title">
+            Overview
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Registered Instruments
+                </div>
+
+                <div class="summary-number">
+                    03
+                </div>
+
+                <div class="summary-note">
+                    Instruments registered
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Verification Requests
+                </div>
+
+                <div class="summary-number">
+                    02
+                </div>
+
+                <div class="summary-note">
+                    Applications submitted
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Pending Requests
+                </div>
+
+                <div class="summary-number">
+                    01
+                </div>
+
+                <div class="summary-note">
+                    Awaiting verification
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Verified Instruments
+                </div>
+
+                <div class="summary-number">
+                    02
+                </div>
+
+                <div class="summary-note">
+                    Currently verified
+                </div>
+
+            </div>
+
+        </div>
+
+
+        
+
+        <div class="main-grid">
+
+
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Recent Activity
+                    </h3>
+
+                    <span>
+                        Latest updates
+                    </span>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-mark">
+                        ✓
+                    </div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Verification application submitted
+                        </strong>
+
+                        <small>
+                            Application submitted successfully
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-mark">
+                        +
+                    </div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Instrument registered
+                        </strong>
+
+                        <small>
+                            New instrument added to your account
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-mark">
+                        ✓
+                    </div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Instrument verification completed
+                        </strong>
+
+                        <small>
+                            Verification record has been updated
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Quick Actions
+                    </h3>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a
+                        href="{% url 'add_instrument' %}"
+                        class="quick-action"
+                    >
+
+                        Register Instrument
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'my_instruments' %}"
+                        class="quick-action"
+                    >
+
+                        My Instruments
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'apply_verification' %}"
+                        class="quick-action"
+                    >
+
+                        Apply for Verification
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'verification_applications' %}"
+                        class="quick-action"
+                    >
+
+                        View Applications
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =========================
+             APPLICATIONS
+        ========================= -->
+
+        <section class="application-panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Verification Applications
+                </h3>
+
+                <span>
+                    Recent applications
+                </span>
+
+            </div>
+
+
+            <div class="application-row header">
+
+                <div>
+                    Instrument
+                </div>
+
+                <div>
+                    Application
+                </div>
+
+                <div>
+                    Status
+                </div>
+
+                <div>
+                    Action
+                </div>
+
+            </div>
+
+
+            <div class="application-row">
+
+                <div class="application-name">
+                    Digital Weighing Scale
+                </div>
+
+                <div class="application-id">
+                    Application #EV-1024
+                </div>
+
+                <div>
+                    <span class="application-status">
+                        Under Review
+                    </span>
+                </div>
+
+                <div>
+                    <a
+                        href="{% url 'verification_applications' %}"
+                        class="view-link"
+                    >
+                        View
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="application-row">
+
+                <div class="application-name">
+                    Electronic Weighing Machine
+                </div>
+
+                <div class="application-id">
+                    Application #EV-1019
+                </div>
+
+                <div>
+                    <span
+                        class="application-status"
+                        style="background:#edf4ef;color:#397051;"
+                    >
+                        Verified
+                    </span>
+                </div>
+
+                <div>
+                    <a
+                        href="{% url 'verification_applications' %}"
+                        class="view-link"
+                    >
+                        View
+                    </a>
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================
+             INFORMATION
+        ========================= -->
+
+        <section class="info-box">
+
+            <h3>
+                Before submitting a verification request
+            </h3>
+
+            <p>
+                Make sure your instrument details are correct and the
+                required information is available. After submitting an
+                application, you can monitor its progress from the
+                Verification Applications section.
+            </p>
+
+        </section>
+
+
+    {% elif role == 'LMO' %}
+
+
+        <section class="intro-card">
+
+            <h2>
+                LMO Dashboard
+            </h2>
+
+            <p>
+                Manage verification and inspection activities.
+            </p>
+
+        </section>
+
+
+    {% elif role == 'GATC' %}
+
+
+        <section class="intro-card">
+
+            <h2>
+                GATC Dashboard
+            </h2>
+
+            <p>
+                Manage testing and verification activities.
+            </p>
+
+        </section>
+
+
+    {% elif role == 'ADMIN' %}
+
+
+        <section class="intro-card">
+
+            <h2>
+                Administrator Dashboard
+            </h2>
+
+            <p>
+                Manage the complete e-Maapan system.
+            </p>
+
+        </section>
+
+
+    {% endif %}
+
+
+    <!-- =========================
+         LOGOUT
+    ========================= -->
+
+    <div class="bottom-area">
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout"
+        >
+            Sign out of account
+        </a>
+
+    </div>
+
+
+    <footer class="footer">
+
+        e-Verification System
+
+    </footer>
+
+
+</main>
+
+
+</body>
+
+</html>
+```

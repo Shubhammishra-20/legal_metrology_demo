@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        e-Verification | Online Verification System
+    </title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eeeee8;
+            color: #263b40;
+            line-height: 1.6;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 74px;
+
+            background: rgba(247, 247, 243, .96);
+
+            border-bottom: 1px solid #dfe4e1;
+
+            display: flex;
+            align-items: center;
+        }
+
+
+        .nav-inner {
+            width: 100%;
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding: 0 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 8px;
+
+            background: #263b40;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 20px;
+        }
+
+
+        .brand-text h1 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            color: #263b40;
+        }
+
+
+        .brand-text span {
+            display: block;
+
+            font-size: 10px;
+
+            color: #718080;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+
+        .nav-links a {
+            color: #43575a;
+
+            font-size: 13px;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+
+            transition: .2s ease;
+        }
+
+
+        .nav-links a:hover {
+            background: #eef2ef;
+            color: #263b40;
+        }
+
+
+        .login-btn {
+            background: #3e8d81 !important;
+            color: white !important;
+
+            padding: 10px 20px !important;
+
+            margin-left: 8px;
+
+            box-shadow:
+                0 4px 12px rgba(62, 141, 129, .18);
+        }
+
+
+        .login-btn:hover {
+            background: #347a70 !important;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 610px;
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #263b40 0%,
+                    #314b50 55%,
+                    #355b5a 100%
+                );
+
+            color: white;
+        }
+
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            border: 1px solid
+                rgba(255,255,255,.08);
+
+            right: -120px;
+            top: -100px;
+        }
+
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            border: 1px solid
+                rgba(255,255,255,.06);
+
+            left: -120px;
+            bottom: -150px;
+        }
+
+
+        .hero-inner {
+            max-width: 1200px;
+
+            width: 100%;
+
+            margin: auto;
+
+            padding: 80px 30px;
+
+            display: grid;
+
+            grid-template-columns:
+                1.15fr .85fr;
+
+            gap: 70px;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .hero-content {
+            max-width: 690px;
+        }
+
+
+        .eyebrow {
+            display: inline-block;
+
+            padding: 7px 13px;
+
+            border: 1px solid
+                rgba(255,255,255,.18);
+
+            border-radius: 20px;
+
+            color: #c8dfda;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 20px;
+        }
+
+
+        .hero h2 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 50px;
+
+            line-height: 1.15;
+
+            font-weight: normal;
+
+            margin-bottom: 22px;
+        }
+
+
+        .hero h2 span {
+            color: #73b8ad;
+        }
+
+
+        .hero p {
+            color: #d0dada;
+
+            font-size: 16px;
+
+            max-width: 620px;
+
+            line-height: 1.8;
+
+            margin-bottom: 30px;
+        }
+
+
+        .hero-buttons {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .hero-primary {
+            background: #3e8d81;
+
+            color: white;
+
+            padding: 13px 23px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+
+        .hero-primary:hover {
+            background: #347a70;
+
+            transform: translateY(-2px);
+        }
+
+
+        .hero-secondary {
+            border: 1px solid
+                rgba(255,255,255,.25);
+
+            color: white;
+
+            padding: 13px 23px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+
+        .hero-secondary:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+
+        /* ================= HERO PANEL ================= */
+
+        .hero-panel {
+            background:
+                rgba(255,255,255,.07);
+
+            border:
+                1px solid rgba(255,255,255,.12);
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,.15);
+        }
+
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding-bottom: 17px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.12);
+
+            margin-bottom: 20px;
+        }
+
+
+        .panel-title strong {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+
+        .online {
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 11px;
+
+            color: #9bd0c7;
+        }
+
+
+        .online-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #6fc0b2;
+        }
+
+
+        .panel-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 13px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.08);
+        }
+
+
+        .panel-item:last-child {
+            border-bottom: none;
+        }
+
+
+        .panel-icon {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 7px;
+
+            background:
+                rgba(62,141,129,.25);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #9dd0c7;
+
+            font-size: 15px;
+        }
+
+
+        .panel-item strong {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .panel-item span {
+            display: block;
+
+            font-size: 11px;
+
+            color: #aebebe;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .section {
+            padding: 85px 25px;
+        }
+
+
+        .section-inner {
+            max-width: 1150px;
+
+            margin: auto;
+        }
+
+
+        .section-heading {
+            text-align: center;
+
+            max-width: 720px;
+
+            margin: 0 auto 50px;
+        }
+
+
+        .section-label {
+            color: #3e8d81;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+
+        .section-heading h2 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 34px;
+
+            font-weight: normal;
+
+            color: #263b40;
+
+            margin-bottom: 13px;
+        }
+
+
+        .section-heading p {
+            color: #718080;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* ================= INTRO ================= */
+
+        .intro-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 50px;
+
+            align-items: center;
+        }
+
+
+        .intro-text h3 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 28px;
+
+            font-weight: normal;
+
+            margin-bottom: 16px;
+        }
+
+
+        .intro-text p {
+            color: #667678;
+
+            font-size: 14px;
+
+            line-height: 1.9;
+
+            margin-bottom: 15px;
+        }
+
+
+        .intro-box {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 10px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 8px 25px rgba(38,59,64,.06);
+        }
+
+
+        .intro-box h4 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            margin-bottom: 18px;
+        }
+
+
+        .check-item {
+            display: flex;
+
+            gap: 11px;
+
+            margin-bottom: 14px;
+
+            font-size: 13px;
+
+            color: #536567;
+        }
+
+
+        .check {
+            flex-shrink: 0;
+
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            background: #e6f1ef;
+
+            color: #3e8d81;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+        }
+
+
+        /* ================= FEATURES ================= */
+
+        .feature-section {
+            background: #f5f5f0;
+        }
+
+
+        .features {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .feature-card {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 9px;
+
+            padding: 25px;
+
+            transition: .25s ease;
+        }
+
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 28px rgba(38,59,64,.08);
+        }
+
+
+        .feature-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 8px;
+
+            background: #e9f2f0;
+
+            color: #3e8d81;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .feature-card h3 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 19px;
+
+            font-weight: normal;
+
+            margin-bottom: 9px;
+        }
+
+
+        .feature-card p {
+            color: #718080;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================= PROCESS ================= */
+
+        .process {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            position: relative;
+        }
+
+
+        .process-card {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 9px;
+
+            padding: 25px;
+
+            position: relative;
+        }
+
+
+        .process-number {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 30px;
+
+            color: #3e8d81;
+
+            margin-bottom: 15px;
+        }
+
+
+        .process-card h3 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 18px;
+
+            font-weight: normal;
+
+            margin-bottom: 9px;
+        }
+
+
+        .process-card p {
+            color: #718080;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================= ROLES ================= */
+
+        .roles-section {
+            background: #263b40;
+
+            color: white;
+        }
+
+
+        .roles-section .section-label {
+            color: #83beb5;
+        }
+
+
+        .roles-section .section-heading h2 {
+            color: white;
+        }
+
+
+        .roles-section .section-heading p {
+            color: #b7c6c6;
+        }
+
+
+        .roles {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .role-card {
+            border: 1px solid
+                rgba(255,255,255,.12);
+
+            background:
+                rgba(255,255,255,.05);
+
+            border-radius: 9px;
+
+            padding: 28px;
+
+            transition: .2s ease;
+        }
+
+
+        .role-card:hover {
+            background:
+                rgba(255,255,255,.08);
+        }
+
+
+        .role-card h3 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 21px;
+
+            font-weight: normal;
+
+            margin-bottom: 10px;
+        }
+
+
+        .role-card p {
+            color: #bac8c8;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            margin-bottom: 16px;
+        }
+
+
+        .role-card ul {
+            list-style: none;
+        }
+
+
+        .role-card li {
+            color: #d4dddd;
+
+            font-size: 12px;
+
+            padding: 7px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.07);
+        }
+
+
+        .role-card li:last-child {
+            border-bottom: none;
+        }
+
+
+        .role-card li::before {
+            content: "✓";
+
+            color: #72b8ad;
+
+            margin-right: 8px;
+        }
+
+
+        /* ================= INSTRUMENTS ================= */
+
+        .instrument-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .instrument {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 9px;
+
+            padding: 22px;
+
+            text-align: center;
+
+            transition: .2s ease;
+        }
+
+
+        .instrument:hover {
+            border-color: #bfd4d0;
+
+            transform: translateY(-3px);
+        }
+
+
+        .instrument-icon {
+            font-size: 26px;
+
+            margin-bottom: 10px;
+
+            color: #3e8d81;
+        }
+
+
+        .instrument strong {
+            display: block;
+
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 16px;
+
+            font-weight: normal;
+        }
+
+
+        .instrument span {
+            display: block;
+
+            color: #849191;
+
+            font-size: 11px;
+
+            margin-top: 4px;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats-section {
+            background: #f5f5f0;
+
+            padding: 65px 25px;
+        }
+
+
+        .stats {
+            max-width: 1000px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .stat {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 9px;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        .stat strong {
+            display: block;
+
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 31px;
+
+            color: #263b40;
+
+            font-weight: normal;
+        }
+
+
+        .stat span {
+            display: block;
+
+            color: #758383;
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+
+        /* ================= FAQ ================= */
+
+        .faq {
+            max-width: 850px;
+
+            margin: auto;
+        }
+
+
+        .faq-item {
+            background: white;
+
+            border: 1px solid #e0e5e2;
+
+            border-radius: 8px;
+
+            padding: 20px 22px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .faq-item h3 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 17px;
+
+            font-weight: normal;
+
+            margin-bottom: 7px;
+
+            color: #263b40;
+        }
+
+
+        .faq-item p {
+            color: #718080;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 80px 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #314b50,
+                    #263b40
+                );
+
+            color: white;
+
+            text-align: center;
+        }
+
+
+        .cta-inner {
+            max-width: 750px;
+
+            margin: auto;
+        }
+
+
+        .cta h2 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-size: 35px;
+
+            font-weight: normal;
+
+            margin-bottom: 14px;
+        }
+
+
+        .cta p {
+            color: #c2d0d0;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            margin-bottom: 25px;
+        }
+
+
+        .cta-button {
+            display: inline-block;
+
+            background: #3e8d81;
+
+            color: white;
+
+            padding: 13px 25px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .cta-button:hover {
+            background: #347a70;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #202f33;
+
+            color: white;
+
+            padding: 45px 25px 20px;
+        }
+
+
+        .footer-inner {
+            max-width: 1150px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                1.4fr 1fr 1fr;
+
+            gap: 50px;
+
+            padding-bottom: 35px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.10);
+        }
+
+
+        .footer-brand h2 {
+            font-family: Georgia,
+                         "Times New Roman",
+                         serif;
+
+            font-weight: normal;
+
+            font-size: 23px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .footer-brand p {
+            color: #aebebe;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            max-width: 400px;
+        }
+
+
+        .footer-column h3 {
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 14px;
+
+            color: #dce5e5;
+        }
+
+
+        .footer-column a {
+            display: block;
+
+            color: #aebebe;
+
+            font-size: 12px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+
+        .footer-bottom {
+            max-width: 1150px;
+
+            margin: 18px auto 0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            color: #879797;
+
+            font-size: 11px;
+        }
+
+
+        /* ================= MOBILE MENU ================= */
+
+        .mobile-menu {
+            display: none;
+
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #263b40;
+
+            color: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links a:not(.login-btn) {
+                display: none;
+            }
+
+
+            .mobile-menu {
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+            }
+
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+
+                gap: 40px;
+            }
+
+
+            .hero {
+                min-height: auto;
+            }
+
+
+            .hero h2 {
+                font-size: 42px;
+            }
+
+
+            .features {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .process {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .roles {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .instrument-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .footer-inner {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 68px;
+            }
+
+
+            .nav-inner {
+                padding: 0 15px;
+            }
+
+
+            .brand-mark {
+                width: 38px;
+                height: 38px;
+
+                font-size: 18px;
+            }
+
+
+            .brand-text h1 {
+                font-size: 18px;
+            }
+
+
+            .brand-text span {
+                font-size: 8px;
+            }
+
+
+            .hero-inner {
+                padding: 65px 20px;
+            }
+
+
+            .hero h2 {
+                font-size: 35px;
+            }
+
+
+            .hero p {
+                font-size: 14px;
+            }
+
+
+            .hero-panel {
+                padding: 20px;
+            }
+
+
+            .section {
+                padding: 65px 18px;
+            }
+
+
+            .section-heading h2 {
+                font-size: 28px;
+            }
+
+
+            .intro-grid {
+                grid-template-columns: 1fr;
+
+                gap: 30px;
+            }
+
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+
+            .process {
+                grid-template-columns: 1fr;
+            }
+
+
+            .instrument-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .stat {
+                padding: 20px 10px;
+            }
+
+
+            .stat strong {
+                font-size: 26px;
+            }
+
+
+            .cta {
+                padding: 65px 20px;
+            }
+
+
+            .cta h2 {
+                font-size: 29px;
+            }
+
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+
+                gap: 30px;
+            }
+
+
+            .footer-bottom {
+                flex-direction: column;
+
+                gap: 7px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="nav-inner">
+
+
+        <a href="#" class="brand">
+
+            <div class="brand-mark">
+                eV
+            </div>
+
+            <div class="brand-text">
+
+                <h1>
+                    e-Verification
+                </h1>
+
+                <span>
+                    Legal Metrology Verification System
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#process">
+                Process
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#roles">
+                Stakeholders
+            </a>
+
+            <a href="#faq">
+                FAQ
+            </a>
+
+            <a href="{% url 'login' %}"
+               class="login-btn">
+
+                Login
+
+            </a>
+
+        </div>
+
+
+        <button class="mobile-menu"
+                id="mobileMenu">
+
+            ☰
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+
+        <div class="hero-content">
+
+            <span class="eyebrow">
+                Digital Legal Metrology Platform
+            </span>
+
+
+            <h2>
+
+                Verification made
+                <span>
+                    simple, transparent
+                </span>
+                and digital.
+
+            </h2>
+
+
+            <p>
+
+                e-Verification is an online platform designed
+                to simplify the verification and inspection of
+                weighing and measuring instruments through a
+                transparent, organized and secure digital process.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="{% url 'login' %}"
+                   class="hero-primary">
+
+                    Login to Portal
+
+                </a>
+
+
+                <a href="#process"
+                   class="hero-secondary">
+
+                    Explore Process
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="hero-panel">
+
+            <div class="panel-title">
+
+                <strong>
+                    Verification Workflow
+                </strong>
+
+                <span class="online">
+
+                    <span class="online-dot"></span>
+
+                    Digital Process
+
+                </span>
+
+            </div>
+
+
+            <div class="panel-item">
+
+                <div class="panel-icon">
+                    01
+                </div>
+
+                <div>
+
+                    <strong>
+                        Application
+                    </strong>
+
+                    <span>
+                        Owner submits instrument details
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-item">
+
+                <div class="panel-icon">
+                    02
+                </div>
+
+                <div>
+
+                    <strong>
+                        Review &amp; Assignment
+                    </strong>
+
+                    <span>
+                        Application reviewed by LMO
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-item">
+
+                <div class="panel-icon">
+                    03
+                </div>
+
+                <div>
+
+                    <strong>
+                        Testing
+                    </strong>
+
+                    <span>
+                        Verification conducted at GATC
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel-item">
+
+                <div class="panel-icon">
+                    04
+                </div>
+
+                <div>
+
+                    <strong>
+                        Verification Record
+                    </strong>
+
+                    <span>
+                        Digital record maintained securely
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section class="section"
+         id="about">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                About the Platform
+            </div>
+
+            <h2>
+                A better way to manage verification
+            </h2>
+
+            <p>
+
+                The platform brings instrument owners,
+                Legal Metrology Officers and Government
+                Approved Testing Centres together through
+                one organized digital workflow.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="intro-grid">
+
+
+            <div class="intro-text">
+
+                <h3>
+                    From application to verification record
+                </h3>
+
+
+                <p>
+
+                    Verification of weighing and measuring
+                    instruments involves several important
+                    activities such as application submission,
+                    document review, assignment, scheduling,
+                    testing and record maintenance.
+
+                </p>
+
+
+                <p>
+
+                    e-Verification provides a centralized
+                    platform where these activities can be
+                    managed digitally, reducing unnecessary
+                    paperwork and making the verification
+                    process easier to monitor.
+
+                </p>
+
+
+                <p>
+
+                    Every stakeholder can work according to
+                    their assigned role while important
+                    application and verification information
+                    remains organized in the system.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="intro-box">
+
+                <h4>
+                    What the platform provides
+                </h4>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Online instrument registration
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Digital verification applications
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Application review and assignment
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Verification scheduling
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Testing centre coordination
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Digital verification records
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="section feature-section"
+         id="features">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Platform Features
+            </div>
+
+            <h2>
+                Everything in one workspace
+            </h2>
+
+            <p>
+
+                Designed to organize the complete verification
+                lifecycle and provide every stakeholder with
+                the information they need.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="features">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    01
+                </div>
+
+                <h3>
+                    Instrument Registration
+                </h3>
+
+                <p>
+
+                    Owners can register weighing and measuring
+                    instruments with important identification,
+                    manufacturer and serial information.
+
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    02
+                </div>
+
+                <h3>
+                    Online Applications
+                </h3>
+
+                <p>
+
+                    Submit verification applications digitally
+                    without depending on disconnected
+                    paperwork-based processes.
+
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    03
+                </div>
+
+                <h3>
+                    Application Review
+                </h3>
+
+                <p>
+
+                    LMOs can review submitted applications,
+                    assign responsible personnel and manage
+                    verification activities.
+
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    04
+                </div>
+
+                <h3>
+                    Scheduling
+                </h3>
+
+                <p>
+
+                    Verification dates and times can be
+                    organized so that inspection and testing
+                    activities are easier to coordinate.
+
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    05
+                </div>
+
+                <h3>
+                    GATC Coordination
+                </h3>
+
+                <p>
+
+                    Government Approved Testing Centres can
+                    access assigned applications and manage
+                    testing-related activities.
+
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    06
+                </div>
+
+                <h3>
+                    Digital Records
+                </h3>
+
+                <p>
+
+                    Verification information can be maintained
+                    digitally for easier monitoring, tracking
+                    and future reference.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROCESS
+===================================================== -->
+
+<section class="section"
+         id="process">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                How It Works
+            </div>
+
+            <h2>
+                Four simple stages
+            </h2>
+
+            <p>
+
+                The complete workflow is organized into clear
+                stages so every stakeholder knows what happens
+                next.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="process">
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    01
+                </div>
+
+                <h3>
+                    Register
+                </h3>
+
+                <p>
+
+                    The instrument owner creates an account
+                    and registers the weighing or measuring
+                    instrument.
+
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    02
+                </div>
+
+                <h3>
+                    Apply
+                </h3>
+
+                <p>
+
+                    The owner submits an online verification
+                    application with the required information.
+
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    03
+                </div>
+
+                <h3>
+                    Review &amp; Test
+                </h3>
+
+                <p>
+
+                    The application is reviewed and verification
+                    activities are scheduled with the assigned
+                    testing centre.
+
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    04
+                </div>
+
+                <h3>
+                    Record
+                </h3>
+
+                <p>
+
+                    The completed verification information is
+                    maintained as a digital official record.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ROLES
+===================================================== -->
+
+<section class="section roles-section"
+         id="roles">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Stakeholders
+            </div>
+
+            <h2>
+                One platform. Three important roles.
+            </h2>
+
+            <p>
+
+                Each user gets a workspace designed around
+                their responsibilities in the verification
+                process.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="roles">
+
+
+            <div class="role-card">
+
+                <h3>
+                    Instrument Owner
+                </h3>
+
+                <p>
+
+                    Manage instruments and submit applications
+                    for verification through the owner workspace.
+
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        Register instruments
+                    </li>
+
+                    <li>
+                        Submit verification applications
+                    </li>
+
+                    <li>
+                        Track application status
+                    </li>
+
+                    <li>
+                        View verification information
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="role-card">
+
+                <h3>
+                    Legal Metrology Officer
+                </h3>
+
+                <p>
+
+                    Review applications and coordinate
+                    verification activities according to
+                    assigned responsibilities.
+
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        Review applications
+                    </li>
+
+                    <li>
+                        Assign verification resources
+                    </li>
+
+                    <li>
+                        Schedule verification
+                    </li>
+
+                    <li>
+                        Monitor application progress
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="role-card">
+
+                <h3>
+                    Government Approved Testing Centre
+                </h3>
+
+                <p>
+
+                    Handle assigned verification activities
+                    and maintain testing-related records.
+
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        View assigned applications
+                    </li>
+
+                    <li>
+                        Manage scheduled testing
+                    </li>
+
+                    <li>
+                        Update verification progress
+                    </li>
+
+                    <li>
+                        Maintain verification records
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INSTRUMENTS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Covered Instruments
+            </div>
+
+            <h2>
+                Supporting different measuring needs
+            </h2>
+
+            <p>
+
+                The platform can be used to manage verification
+                workflows for different categories of weighing
+                and measuring instruments.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="instrument-grid">
+
+
+            <div class="instrument">
+
+                <div class="instrument-icon">
+                    ⚖
+                </div>
+
+                <strong>
+                    Weighing Scales
+                </strong>
+
+                <span>
+                    Commercial weighing instruments
+                </span>
+
+            </div>
+
+
+            <div class="instrument">
+
+                <div class="instrument-icon">
+                    ◫
+                </div>
+
+                <strong>
+                    Weighing Machines
+                </strong>
+
+                <span>
+                    Various weighing equipment
+                </span>
+
+            </div>
+
+
+            <div class="instrument">
+
+                <div class="instrument-icon">
+                    ◇
+                </div>
+
+                <strong>
+                    Measuring Instruments
+                </strong>
+
+                <span>
+                    Length and quantity measurement
+                </span>
+
+            </div>
+
+
+            <div class="instrument">
+
+                <div class="instrument-icon">
+                    ⊙
+                </div>
+
+                <strong>
+                    Other Equipment
+                </strong>
+
+                <span>
+                    Applicable legal metrology instruments
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STATS
+===================================================== -->
+
+<section class="stats-section">
+
+    <div class="stats">
+
+
+        <div class="stat">
+
+            <strong>
+                3
+            </strong>
+
+            <span>
+                Key Stakeholder Roles
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                4
+            </strong>
+
+            <span>
+                Verification Stages
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                24/7
+            </strong>
+
+            <span>
+                Digital Access
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                100%
+            </strong>
+
+            <span>
+                Digital Workflow
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FAQ
+===================================================== -->
+
+<section class="section"
+         id="faq">
+
+    <div class="section-inner">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Frequently Asked Questions
+            </div>
+
+            <h2>
+                Common questions
+            </h2>
+
+            <p>
+
+                A quick overview of how the e-Verification
+                platform works.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="faq">
+
+
+            <div class="faq-item">
+
+                <h3>
+                    What is e-Verification?
+                </h3>
+
+                <p>
+
+                    e-Verification is a digital platform for
+                    managing the application, review, scheduling,
+                    testing and record-keeping activities related
+                    to verification of weighing and measuring
+                    instruments.
+
+                </p>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <h3>
+                    Who can use the platform?
+                </h3>
+
+                <p>
+
+                    The system provides separate workspaces for
+                    instrument owners, Legal Metrology Officers
+                    and Government Approved Testing Centres.
+
+                </p>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <h3>
+                    Can an owner track an application?
+                </h3>
+
+                <p>
+
+                    Yes. The owner workspace is designed to
+                    display submitted verification applications
+                    and their current status.
+
+                </p>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <h3>
+                    What does an LMO do?
+                </h3>
+
+                <p>
+
+                    The Legal Metrology Officer reviews
+                    applications, manages assignments and
+                    coordinates verification activities.
+
+                </p>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <h3>
+                    What is the role of a GATC?
+                </h3>
+
+                <p>
+
+                    A Government Approved Testing Centre handles
+                    assigned testing and verification activities
+                    and updates the relevant verification records.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CALL TO ACTION
+===================================================== -->
+
+<section class="cta">
+
+    <div class="cta-inner">
+
+        <h2>
+            Ready to access the e-Verification portal?
+        </h2>
+
+        <p>
+
+            Login to your workspace to manage instruments,
+            verification applications and activities according
+            to your assigned role.
+
+        </p>
+
+
+        <a href="{% url 'login' %}"
+           class="cta-button">
+
+            Login to Portal
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-inner">
+
+
+        <div class="footer-brand">
+
+            <h2>
+                e-Verification
+            </h2>
+
+            <p>
+
+                An online verification management platform
+                designed to organize the digital workflow for
+                weighing and measuring instrument verification.
+
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#process">
+                Verification Process
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#faq">
+                FAQ
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Portal
+            </h3>
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="#roles">
+                Stakeholders
+            </a>
+
+            <a href="#about">
+                About System
+            </a>
+
+        </div>
+
+
+    </div>
+    <!-- QR VERIFY -->
+    
+    <section class="qr-section" id="verify">
+    
+        <div class="qr-box">
+        
+            <h2>
+                🔍 Verify a Certificate
+            </h2>
+        
+            <p>
+                Have a certificate QR code?
+                Scan the QR code using your mobile camera.
+                The QR will open the official e-Maapan
+                verification page where the certificate
+                authenticity can be checked.
+            </p>
+        
+            <a
+                href="#"
+                class="scan-btn"
+                onclick="startScanner(); return false;"
+            >
+                📷 Scan QR Code
+            </a>
+        
+            <div id="scanner-area"
+                 style="display:none; margin-top:25px;">
+        
+                <p>
+                    Point your mobile camera at the
+                    certificate QR code.
+                </p>
+            
+                <video
+                    id="qr-video"
+                    style="
+                        width:100%;
+                        max-width:400px;
+                        border-radius:15px;
+                    "
+                    autoplay
+                ></video>
+            
+                <p id="scan-status"></p>
+            
+            </div>
+        
+        </div>
+    
+    </section>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 e-Verification. All rights reserved.
+        </span>
+
+        <span>
+            Digital Legal Metrology Verification Platform
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     MOBILE NAV SCRIPT
+===================================================== -->
+
+<script>
+
+    const mobileMenu =
+        document.getElementById("mobileMenu");
+
+    const navLinks =
+        document.querySelector(".nav-links");
+
+
+    mobileMenu.addEventListener(
+        "click",
+        function () {
+
+            if (navLinks.style.display === "flex") {
+
+                navLinks.style.display = "";
+
+            } else {
+
+                navLinks.style.display = "flex";
+
+                navLinks.style.position = "absolute";
+
+                navLinks.style.top = "68px";
+
+                navLinks.style.left = "0";
+
+                navLinks.style.right = "0";
+
+                navLinks.style.padding = "12px 15px";
+
+                navLinks.style.background = "#f7f7f3";
+
+                navLinks.style.borderBottom =
+                    "1px solid #dfe4e1";
+
+                navLinks.style.flexDirection =
+                    "column";
+
+                navLinks.style.alignItems =
+                    "stretch";
+
+                navLinks.querySelectorAll("a")
+                    .forEach(function(link) {
+
+                        link.style.display = "block";
+
+                    });
+
+            }
+
+        }
+    );
+
+
+    document.querySelectorAll(
+        ".nav-links a"
+    ).forEach(function(link) {
+
+        link.addEventListener(
+            "click",
+            function() {
+
+                if (window.innerWidth <= 900) {
+
+                    navLinks.style.display = "";
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+<script>
+
+async function startScanner() {
+
+    const area =
+        document.getElementById("scanner-area");
+
+    const video =
+        document.getElementById("qr-video");
+
+    const status =
+        document.getElementById("scan-status");
+
+    area.style.display = "block";
+
+    if (!("BarcodeDetector" in window)) {
+
+        status.innerHTML =
+            "QR scanning is not supported by this browser. " +
+            "Please use your phone camera to scan the certificate.";
+
+        return;
+    }
+
+    try {
+
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "environment"
+                }
+            });
+
+        video.srcObject = stream;
+
+        const detector =
+            new BarcodeDetector({
+                formats: ["qr_code"]
+            });
+
+        const scan = async () => {
+
+            const codes =
+                await detector.detect(video);
+
+            if (codes.length > 0) {
+
+                const url =
+                    codes[0].rawValue;
+
+                stream.getTracks().forEach(
+                    track => track.stop()
+                );
+
+                window.location.href = url;
+
+                return;
+            }
+
+            requestAnimationFrame(scan);
+        };
+
+        scan();
+
+    } catch (error) {
+
+        status.innerHTML =
+            "Camera permission denied.";
+
+    }
+}
+
+</script>
+
+
+</body>
+
+</html>

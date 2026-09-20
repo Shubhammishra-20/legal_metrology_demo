@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | e-Verification</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f4ee;
+            color: #24343a;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, Arial, sans-serif;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 35px 25px;
+
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+
+            background: rgba(62, 141, 129, 0.07);
+
+            top: -190px;
+            left: -160px;
+
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+
+            background: rgba(36, 52, 58, 0.045);
+
+            bottom: -260px;
+            right: -190px;
+
+            pointer-events: none;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1080px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-box {
+            width: 100%;
+            min-height: 610px;
+
+            background: #ffffff;
+
+            border: 1px solid #e2e1da;
+            border-radius: 18px;
+
+            box-shadow:
+                0 25px 70px rgba(36, 52, 58, 0.12);
+
+            overflow: hidden;
+
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
+
+        .left-panel {
+            position: relative;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #24343a 0%,
+                    #293f45 55%,
+                    #31534f 100%
+                );
+
+            color: #ffffff;
+
+            padding: 55px 52px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: "";
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+
+            right: -140px;
+            top: -100px;
+        }
+
+        .left-panel::after {
+            content: "";
+            position: absolute;
+
+            width: 240px;
+            height: 240px;
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+
+            left: -120px;
+            bottom: -120px;
+        }
+
+        .brand {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-top {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #3e8d81;
+
+            border-radius: 11px;
+
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 23px;
+            font-weight: bold;
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .brand-name {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 23px;
+            font-weight: 600;
+        }
+
+        .brand-subtitle {
+            margin: 6px 0 0 61px;
+
+            color: rgba(255, 255, 255, 0.62);
+
+            font-size: 11px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .intro {
+            position: relative;
+            z-index: 2;
+
+            max-width: 450px;
+
+            margin-top: 45px;
+        }
+
+        .intro-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            color: #8fd2c6;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+
+            margin-bottom: 15px;
+        }
+
+        .intro-label span {
+            width: 24px;
+            height: 1px;
+
+            background: #3e8d81;
+        }
+
+        .intro h1 {
+            margin: 0;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 43px;
+            line-height: 1.13;
+            font-weight: 500;
+
+            letter-spacing: -1px;
+        }
+
+        .intro h1 strong {
+            color: #8fd2c6;
+            font-weight: 500;
+        }
+
+        .intro p {
+            margin: 20px 0 0;
+
+            max-width: 410px;
+
+            color: rgba(255, 255, 255, 0.68);
+
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        .features {
+            position: relative;
+            z-index: 2;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 35px;
+            max-width: 440px;
+        }
+
+        .feature {
+            padding: 15px;
+
+            background: rgba(255, 255, 255, 0.055);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(62, 141, 129, 0.20);
+
+            border-radius: 7px;
+
+            color: #9bd6cd;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+        .feature strong {
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .feature span {
+            display: block;
+
+            margin-top: 4px;
+
+            color: rgba(255, 255, 255, 0.48);
+
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .left-footer {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: rgba(255, 255, 255, 0.42);
+
+            font-size: 10px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            background: #72c5b8;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 4px rgba(114, 197, 184, 0.10);
+        }
+
+        .right-panel {
+            padding: 55px 55px 35px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header small {
+            display: block;
+
+            color: #3e8d81;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+        .form-header h2 {
+            margin: 0;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            color: #24343a;
+
+            font-size: 30px;
+            font-weight: 500;
+
+            letter-spacing: -0.5px;
+        }
+
+        .form-header p {
+            margin: 9px 0 0;
+
+            color: #7b8588;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .error {
+            margin-bottom: 18px;
+
+            padding: 12px 14px;
+
+            background: #fff3f1;
+
+            border: 1px solid #efd5d1;
+            border-left: 3px solid #b84035;
+
+            border-radius: 7px;
+
+            color: #a02d24;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #34444a;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d8d9d4;
+            border-radius: 8px;
+
+            background: #fbfbf9;
+
+            color: #24343a;
+
+            font-family: inherit;
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        input:hover {
+            border-color: #bfc5c1;
+        }
+
+        input:focus {
+            background: #ffffff;
+
+            border-color: #3e8d81;
+
+            box-shadow:
+                0 0 0 3px rgba(62, 141, 129, 0.10);
+        }
+
+        button {
+            width: 100%;
+
+            margin-top: 4px;
+
+            padding: 13px 16px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #3e8d81;
+            color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 16px rgba(62, 141, 129, 0.18);
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            background: #347b70;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 20px rgba(62, 141, 129, 0.22);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .register-box {
+            margin-top: 24px;
+            padding-top: 20px;
+
+            border-top: 1px solid #ecebe6;
+
+            text-align: center;
+        }
+
+        .register-box p {
+            margin: 0;
+
+            color: #858d90;
+
+            font-size: 12px;
+        }
+
+        .register-box a {
+            color: #3e8d81;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .register-box a:hover {
+            text-decoration: underline;
+        }
+
+        .security {
+            margin-top: 25px;
+
+            padding: 12px 13px;
+
+            background: #f7f8f5;
+
+            border: 1px solid #e7e6df;
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .security-icon {
+            width: 29px;
+            height: 29px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #e3f0ed;
+
+            border-radius: 7px;
+
+            color: #3e8d81;
+
+            font-size: 13px;
+        }
+
+        .security-text strong {
+            display: block;
+
+            color: #435156;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .security-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #8a9294;
+
+            font-size: 9px;
+        }
+
+        .copyright {
+            margin-top: 23px;
+
+            text-align: center;
+
+            color: #a0a5a4;
+
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+
+            .login-box {
+                grid-template-columns: 1fr;
+                max-width: 560px;
+            }
+
+            .left-panel {
+                min-height: 430px;
+                padding: 40px 42px;
+            }
+
+            .intro {
+                margin-top: 30px;
+            }
+
+            .intro h1 {
+                font-size: 36px;
+            }
+
+            .left-footer {
+                margin-top: 30px;
+            }
+
+            .right-panel {
+                padding: 42px;
+            }
+
+        }
+
+        @media (max-width: 520px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .login-box {
+                border-radius: 13px;
+            }
+
+            .left-panel {
+                min-height: auto;
+                padding: 30px 25px;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+
+                font-size: 20px;
+            }
+
+            .brand-name {
+                font-size: 20px;
+            }
+
+            .brand-subtitle {
+                margin-left: 56px;
+                font-size: 9px;
+            }
+
+            .intro {
+                margin-top: 35px;
+            }
+
+            .intro h1 {
+                font-size: 31px;
+            }
+
+            .intro p {
+                font-size: 12px;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+
+                margin-top: 25px;
+            }
+
+            .feature {
+                padding: 12px;
+            }
+
+            .feature-icon {
+                width: 27px;
+                height: 27px;
+            }
+
+            .right-panel {
+                padding: 32px 24px 27px;
+            }
+
+            .form-header h2 {
+                font-size: 26px;
+            }
+
+        }
+
+        @media (max-width: 360px) {
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .intro h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="login-box">
+
+        <div class="left-panel">
+
+            <div>
+
+                <div class="brand">
+
+                    <div class="brand-top">
+
+                        <div class="brand-icon">
+                            e
+                        </div>
+
+                        <div class="brand-name">
+                            e-Verification
+                        </div>
+
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Legal Metrology · Digital Services
+                    </div>
+
+                </div>
+
+
+                <div class="intro">
+
+                    <div class="intro-label">
+                        <span></span>
+                        Online Verification System
+                    </div>
+
+                    <h1>
+                        Verify with
+                        <strong>confidence.</strong>
+                    </h1>
+
+                    <p>
+                        A digital platform for managing weighing and
+                        measuring instrument verification applications,
+                        records and services online.
+                    </p>
+
+
+                    <div class="features">
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+                                ✓
+                            </div>
+
+                            <strong>Digital Verification</strong>
+
+                            <span>
+                                Manage verification applications online.
+                            </span>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+                                ◉
+                            </div>
+
+                            <strong>Track Applications</strong>
+
+                            <span>
+                                Keep track of your verification status.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="left-footer">
+
+                <span class="status-dot"></span>
+
+                Secure digital verification service
+
+            </div>
+
+        </div>
+
+
+        <div class="right-panel">
+
+            <div class="form-header">
+
+                <small>Owner workspace</small>
+
+                <h2>
+                    Welcome back
+                </h2>
+
+                <p>
+                    Sign in to continue to your e-Verification workspace.
+                </p>
+
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.username.id_for_label }}">
+                        Username
+                    </label>
+
+                    {{ form.username }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.password.id_for_label }}">
+                        Password
+                    </label>
+
+                    {{ form.password }}
+
+                </div>
+
+
+                <button type="submit">
+
+                    Login to Workspace
+
+                    <span style="margin-left: 7px;">
+                        →
+                    </span>
+
+                </button>
+
+            </form>
+
+
+            <div class="register-box">
+
+                <p>
+
+                    Don't have an account?
+
+                    <a href="{% url 'register' %}">
+                        Register as Owner
+                    </a>
+
+                </p>
+
+            </div>
+
+
+            <div class="security">
+
+                <div class="security-icon">
+                    ✓
+                </div>
+
+                <div class="security-text">
+
+                    <strong>
+                        Secure access
+                    </strong>
+
+                    <span>
+                        Your account information is protected.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="copyright">
+
+                Legal Metrology · Online Verification System
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

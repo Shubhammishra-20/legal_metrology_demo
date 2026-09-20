@@ -1,0 +1,1326 @@
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    {{ title }} | e-Verification
+</title>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+        background: #f5f4ee;
+        color: #24343a;
+        font-family:
+            "Segoe UI",
+            "Trebuchet MS",
+            Arial,
+            sans-serif;
+        overflow-x: hidden;
+    }
+
+    .layout {
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 255px;
+        min-height: 100vh;
+        background: #132d3a;
+        color: #dbe5e8;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        padding: 31px 17px;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition:
+            transform .42s cubic-bezier(.22,1,.36,1),
+            box-shadow .42s ease;
+        box-shadow: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow:
+            14px 0 45px
+            rgba(18,40,49,.16);
+    }
+
+    .sidebar-brand {
+        padding: 0 16px;
+        margin-bottom: 48px;
+    }
+
+    .sidebar-brand h2 {
+        font-size: 19px;
+        font-weight: 650;
+        color: #ffffff;
+        letter-spacing: .2px;
+    }
+
+    .sidebar-brand p {
+        margin-top: 5px;
+        font-size: 10px;
+        color: #84979e;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .nav-title {
+        padding: 0 16px;
+        color: #6f858e;
+        font-size: 9px;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        margin-bottom: 11px;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .nav a {
+        min-height: 44px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: #aebec3;
+        border-radius: 9px;
+        font-size: 13px;
+        position: relative;
+        overflow: hidden;
+        transition:
+            background .25s ease,
+            color .25s ease,
+            padding-left .25s ease;
+    }
+
+    .nav a::before {
+        content: "";
+        width: 3px;
+        height: 20px;
+        position: absolute;
+        left: 0;
+        top: 12px;
+        background: transparent;
+        border-radius: 0 4px 4px 0;
+        transition: .25s ease;
+    }
+
+    .nav a:hover {
+        background: #1d3c4a;
+        color: #ffffff;
+        padding-left: 19px;
+    }
+
+    .nav a.active {
+        background: #244555;
+        color: #ffffff;
+    }
+
+    .nav a.active::before {
+        background: #4a9b8d;
+    }
+
+    .nav-icon {
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #79939b;
+        flex-shrink: 0;
+    }
+
+    .nav a.active .nav-icon {
+        color: #64ad9f;
+    }
+
+    .sidebar-bottom {
+        position: absolute;
+        left: 17px;
+        right: 17px;
+        bottom: 28px;
+        padding-top: 18px;
+        border-top:
+            1px solid
+            rgba(255,255,255,.08);
+    }
+
+    .sidebar-bottom a {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: #a9b9be;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 10px 15px;
+        border-radius: 7px;
+        transition: .2s ease;
+    }
+
+    .sidebar-bottom a:hover {
+        background: #1d3c4a;
+        color: #ffffff;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15,34,42,.20);
+        z-index: 90;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity .35s ease,
+            visibility .35s ease;
+        backdrop-filter: blur(1px);
+    }
+
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .content {
+        width: 100%;
+        min-height: 100vh;
+        transform: translateX(0);
+        transition:
+            transform .42s
+            cubic-bezier(.22,1,.36,1);
+    }
+
+    .content.sidebar-open {
+        transform: translateX(255px);
+    }
+
+    .menu-button {
+        position: fixed;
+        left: 22px;
+        top: 16px;
+        width: 40px;
+        height: 36px;
+        border: 1px solid #d9ddd8;
+        background: rgba(255,255,255,.94);
+        border-radius: 9px;
+        cursor: pointer;
+        z-index: 110;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        box-shadow:
+            0 5px 18px
+            rgba(36,52,58,.08);
+        transition:
+            background .25s ease,
+            border-color .25s ease,
+            transform .25s ease,
+            box-shadow .25s ease;
+    }
+
+    .menu-button:hover {
+        background: #ffffff;
+        border-color: #b8c9c3;
+        transform: translateY(-1px);
+        box-shadow:
+            0 8px 22px
+            rgba(36,52,58,.12);
+    }
+
+    .menu-line {
+        width: 18px;
+        height: 2px;
+        border-radius: 3px;
+        background: #29434b;
+        transition:
+            transform .3s ease,
+            opacity .25s ease;
+    }
+
+    .menu-button.active
+    .menu-line:nth-child(1) {
+        transform:
+            translateY(7px)
+            rotate(45deg);
+    }
+
+    .menu-button.active
+    .menu-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-button.active
+    .menu-line:nth-child(3) {
+        transform:
+            translateY(-7px)
+            rotate(-45deg);
+    }
+
+    .topbar {
+        height: 67px;
+        background: rgba(245,244,238,.96);
+        border-bottom: 1px solid #e5e2d9;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 4%;
+        position: sticky;
+        top: 0;
+        z-index: 15;
+        backdrop-filter: blur(8px);
+    }
+
+    .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 21px;
+    }
+
+    .workspace-label {
+        font-size: 9px;
+        color: #879196;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .user-circle {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid #cbd9d5;
+        background: #e9f0ed;
+        color: #41796e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .main {
+        width: 92%;
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 38px 0 65px;
+    }
+
+    .page-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 30px;
+        margin-bottom: 25px;
+    }
+
+    .eyebrow {
+        font-size: 9px;
+        color: #718187;
+        text-transform: uppercase;
+        letter-spacing: 1.8px;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .page-heading h1 {
+        font-family:
+            Georgia,
+            "Times New Roman",
+            serif;
+        font-size: 35px;
+        line-height: 1.2;
+        font-weight: 400;
+        color: #22343b;
+        letter-spacing: -.8px;
+    }
+
+    .page-heading p {
+        color: #7c898e;
+        font-size: 12px;
+        margin-top: 9px;
+        line-height: 1.6;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #397c70;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 600;
+        padding-bottom: 6px;
+        white-space: nowrap;
+        transition: .2s ease;
+    }
+
+    .back-link:hover {
+        transform: translateX(-3px);
+    }
+
+    .step-strip {
+        background: #ffffff;
+        border: 1px solid #e4e2da;
+        border-radius: 11px;
+        padding: 18px 21px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow:
+            0 5px 18px
+            rgba(35,54,59,.025);
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #718187;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    .step-number {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #edf4f1;
+        color: #438a7d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .step.active .step-number {
+        background: #3e8d81;
+        color: #ffffff;
+        box-shadow:
+            0 4px 12px
+            rgba(62,141,129,.22);
+    }
+
+    .step.active span:last-child {
+        color: #30484e;
+        font-weight: 600;
+    }
+
+    .step-line {
+        height: 1px;
+        flex: 1;
+        background: #e4e7e3;
+        min-width: 25px;
+    }
+
+    .form-layout {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr)
+            265px;
+        gap: 14px;
+        align-items: start;
+    }
+
+    .form-card {
+        background: #ffffff;
+        border: 1px solid #e4e2da;
+        border-radius: 11px;
+        padding: 28px 30px;
+        box-shadow:
+            0 6px 22px
+            rgba(35,54,59,.035);
+    }
+
+    .form-card-head {
+        padding-bottom: 19px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #eceae3;
+    }
+
+    .form-card-head small {
+        color: #758287;
+        text-transform: uppercase;
+        font-size: 9px;
+        letter-spacing: 1.5px;
+        font-weight: 600;
+    }
+
+    .form-card-head h2 {
+        margin-top: 6px;
+        font-family:
+            Georgia,
+            "Times New Roman",
+            serif;
+        font-size: 22px;
+        color: #263940;
+        font-weight: 400;
+    }
+
+    .form-card-head p {
+        margin-top: 6px;
+        font-size: 10px;
+        color: #899498;
+        line-height: 1.6;
+    }
+
+    .form-group {
+        margin-bottom: 19px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 11px;
+        font-weight: 650;
+        color: #3c4e54;
+        letter-spacing: .1px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px 13px;
+        border: 1px solid #d8dedb;
+        border-radius: 8px;
+        font-size: 12px;
+        font-family: inherit;
+        color: #304249;
+        background: #fcfcfa;
+        outline: none;
+        transition:
+            border-color .22s ease,
+            box-shadow .22s ease,
+            background .22s ease;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+        border-color: #bdccc7;
+        background: #ffffff;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #4a9b8d;
+        background: #ffffff;
+        box-shadow:
+            0 0 0 3px
+            rgba(62,141,129,.10);
+    }
+
+    textarea {
+        min-height: 110px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #a8b1b3;
+    }
+
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 6px 0 0;
+        color: #b42318;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .errorlist li {
+        padding-left: 2px;
+    }
+
+    .form-alert {
+        background: #fbefed;
+        border: 1px solid #f0d3ce;
+        color: #a54136;
+        border-radius: 8px;
+        padding: 11px 13px;
+        margin-bottom: 20px;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 27px;
+        padding-top: 21px;
+        border-top: 1px solid #eceae3;
+    }
+
+    button,
+    .cancel {
+        min-height: 41px;
+        padding: 0 20px;
+        border-radius: 21px;
+        font-size: 11px;
+        font-weight: 650;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease,
+            background .2s ease,
+            border-color .2s ease;
+    }
+
+    button {
+        border: 1px solid #3e8d81;
+        background: #3e8d81;
+        color: #ffffff;
+        flex: 1;
+    }
+
+    button:hover {
+        background: #347c71;
+        border-color: #347c71;
+        transform: translateY(-1px);
+        box-shadow:
+            0 6px 16px
+            rgba(62,141,129,.20);
+    }
+
+    .cancel {
+        border: 1px solid #d8dedb;
+        color: #455a60;
+        background: #ffffff;
+        min-width: 105px;
+    }
+
+    .cancel:hover {
+        border-color: #b8c9c3;
+        background: #f8faf8;
+        transform: translateY(-1px);
+    }
+
+    .info-card {
+        background: #ffffff;
+        border: 1px solid #e4e2da;
+        border-radius: 11px;
+        padding: 22px 20px;
+        box-shadow:
+            0 6px 22px
+            rgba(35,54,59,.025);
+    }
+
+    .info-label {
+        color: #758287;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .info-card h3 {
+        font-family:
+            Georgia,
+            "Times New Roman",
+            serif;
+        color: #263940;
+        font-size: 19px;
+        font-weight: 400;
+        margin-bottom: 9px;
+    }
+
+    .info-card > p {
+        color: #7b888d;
+        font-size: 10px;
+        line-height: 1.7;
+        margin-bottom: 17px;
+    }
+
+    .checklist {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+    }
+
+    .check-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        font-size: 10px;
+        color: #68787d;
+        line-height: 1.5;
+    }
+
+    .check-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #e8f1ed;
+        color: #3d8275;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .secure-card {
+        margin-top: 14px;
+        background: #edf3f0;
+        border: 1px solid #dbe7e3;
+        border-radius: 11px;
+        padding: 18px 20px;
+    }
+
+    .secure-top {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 7px;
+    }
+
+    .secure-icon {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #d9ebe5;
+        color: #397c70;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .secure-card strong {
+        color: #355c54;
+        font-size: 11px;
+    }
+
+    .secure-card p {
+        color: #718087;
+        font-size: 9px;
+        line-height: 1.6;
+        padding-left: 34px;
+    }
+
+    .footer {
+        text-align: center;
+        color: #98a1a4;
+        font-size: 9px;
+        padding-top: 34px;
+    }
+
+    @media (max-width: 1050px) {
+
+        .content.sidebar-open {
+            transform: translateX(220px);
+        }
+
+        .sidebar {
+            width: 220px;
+        }
+
+        .form-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .info-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .secure-card {
+            margin-top: 0;
+        }
+    }
+
+    @media (max-width: 760px) {
+
+        .sidebar {
+            width: 245px;
+        }
+
+        .content.sidebar-open {
+            transform: translateX(245px);
+        }
+
+        .topbar {
+            height: 62px;
+            padding: 0 20px 0 75px;
+        }
+
+        .menu-button {
+            left: 18px;
+            top: 13px;
+        }
+
+        .workspace-label {
+            display: none;
+        }
+
+        .main {
+            width: 91%;
+            padding-top: 29px;
+        }
+
+        .page-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .page-heading h1 {
+            font-size: 29px;
+        }
+
+        .back-link {
+            padding-bottom: 0;
+        }
+
+        .step-strip {
+            overflow-x: auto;
+            padding: 15px;
+            scrollbar-width: none;
+        }
+
+        .step-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .step {
+            flex-shrink: 0;
+        }
+
+        .step-line {
+            min-width: 20px;
+        }
+
+        .form-card {
+            padding: 23px 18px;
+        }
+
+        .info-side {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .sidebar {
+            width: 255px;
+        }
+
+        .content.sidebar-open {
+            transform: translateX(255px);
+        }
+
+        .form-card-head h2 {
+            font-size: 20px;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        .cancel {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+            min-height: 43px;
+        }
+
+        .step-strip {
+            gap: 10px;
+        }
+
+        .step {
+            font-size: 9px;
+        }
+
+        .step-line {
+            min-width: 15px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            transition-duration: .01ms !important;
+        }
+    }
+
+</style>
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="sidebar-brand">
+
+        <h2>
+            e-Verification
+        </h2>
+
+        <p>
+            Owner Workspace
+        </p>
+
+    </div>
+
+    <div class="nav-title">
+        Workspace
+    </div>
+
+    <nav class="nav">
+
+        <a href="{% url 'dashboard' %}">
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Overview
+
+        </a>
+
+        <a
+            href="{% url 'my_instruments' %}"
+            class="active"
+        >
+
+            <span class="nav-icon">
+                ◉
+            </span>
+
+            My Instruments
+
+        </a>
+
+        <a href="{% url 'verification_applications' %}">
+
+            <span class="nav-icon">
+                □
+            </span>
+
+            My Verification Applications
+
+        </a>
+
+        <a href="{% url 'apply_verification' %}">
+
+            <span class="nav-icon">
+                ＋
+            </span>
+
+            Apply for Verification
+
+        </a>
+
+        <a href="{% url 'add_instrument' %}">
+
+            <span class="nav-icon">
+                ＋
+            </span>
+
+            Register Instrument
+
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <a href="{% url 'logout' %}">
+
+            <span class="nav-icon">
+                ↪
+            </span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+<div
+    class="content"
+    id="content"
+>
+
+    <button
+        type="button"
+        class="menu-button"
+        id="menuButton"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+    >
+
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+
+    </button>
+
+    <header class="topbar">
+
+        <div class="topbar-right">
+
+            <div class="workspace-label">
+                Owner Workspace
+            </div>
+
+            <div class="user-circle">
+                OW
+            </div>
+
+        </div>
+
+    </header>
+
+    <main class="main">
+
+        <section class="page-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    Owner workspace · Instrument management
+                </div>
+
+                <h1>
+                    {{ title }}
+                </h1>
+
+                <p>
+                    Enter the instrument details carefully and make sure
+                    all information is correct before saving.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'my_instruments' %}"
+                class="back-link"
+            >
+                ←
+                Back to instruments
+            </a>
+
+        </section>
+
+        <div class="step-strip">
+
+            <div class="step active">
+
+                <span class="step-number">
+                    1
+                </span>
+
+                <span>
+                    Instrument details
+                </span>
+
+            </div>
+
+            <div class="step-line"></div>
+
+            <div class="step">
+
+                <span class="step-number">
+                    2
+                </span>
+
+                <span>
+                    Review information
+                </span>
+
+            </div>
+
+            <div class="step-line"></div>
+
+            <div class="step">
+
+                <span class="step-number">
+                    3
+                </span>
+
+                <span>
+                    Save
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="form-layout">
+
+            <section class="form-card">
+
+                <div class="form-card-head">
+
+                    <small>
+                        Instrument information
+                    </small>
+
+                    <h2>
+                        {{ title }}
+                    </h2>
+
+                    <p>
+                        Please provide accurate information for the
+                        verification record.
+                    </p>
+
+                </div>
+
+                {% if form.non_field_errors %}
+
+                    <div class="form-alert">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {% for field in form %}
+
+                        <div class="form-group">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endfor %}
+
+                    <div class="buttons">
+
+                        <a
+                            href="{% url 'my_instruments' %}"
+                            class="cancel"
+                        >
+                            Cancel
+                        </a>
+
+                        <button type="submit">
+
+                            {{ button_text|default:"Save" }}
+
+                            <span style="margin-left:7px;">
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+            <aside class="info-side">
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Quick checklist
+                    </div>
+
+                    <h3>
+                        Before you save
+                    </h3>
+
+                    <p>
+                        A few simple checks can help keep your
+                        verification record accurate.
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="check-item">
+
+                            <span class="check-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Check the instrument name and type.
+                            </span>
+
+                        </div>
+
+                        <div class="check-item">
+
+                            <span class="check-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Verify model and identification details.
+                            </span>
+
+                        </div>
+
+                        <div class="check-item">
+
+                            <span class="check-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Make sure the information is readable
+                                and correct.
+                            </span>
+
+                        </div>
+
+                        <div class="check-item">
+
+                            <span class="check-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Keep supporting information available
+                                for verification.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="secure-card">
+
+                    <div class="secure-top">
+
+                        <span class="secure-icon">
+                            ✓
+                        </span>
+
+                        <strong>
+                            Secure submission
+                        </strong>
+
+                    </div>
+
+                    <p>
+                        Your form is submitted through the
+                        e-Verification system using a protected
+                        session.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+        <div class="footer">
+            e-Verification System
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    const menuButton = document.getElementById("menuButton");
+    const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("content");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+    menuButton.addEventListener("click", function () {
+
+        sidebar.classList.toggle("open");
+        content.classList.toggle("sidebar-open");
+        menuButton.classList.toggle("active");
+
+        const isOpen = sidebar.classList.contains("open");
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            isOpen
+        );
+
+        if (window.innerWidth <= 760) {
+            sidebarOverlay.classList.toggle(
+                "show",
+                isOpen
+            );
+        }
+
+    });
+
+    sidebarOverlay.addEventListener("click", function () {
+
+        sidebar.classList.remove("open");
+        content.classList.remove("sidebar-open");
+        menuButton.classList.remove("active");
+        sidebarOverlay.classList.remove("show");
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    });
+
+</script>

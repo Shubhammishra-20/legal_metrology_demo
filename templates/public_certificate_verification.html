@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Certificate Verification | e-Verification</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eeeee8;
+            color: #263b40;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 35px 18px 45px;
+        }
+
+        .header {
+            max-width: 920px;
+            margin: 0 auto 25px;
+            background: #263b40;
+            color: white;
+            padding: 22px 28px;
+            border-radius: 9px;
+            border-bottom: 4px solid #3e8d81;
+            box-shadow: 0 10px 28px rgba(38, 59, 64, .12);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            background: #3e8d81;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .brand-text p {
+            margin: 4px 0 0;
+            font-size: 11px;
+            color: #cbd7d5;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: auto;
+        }
+
+        .verified {
+            background: #ffffff;
+            border: 1px solid #dce3e0;
+            border-radius: 10px;
+            padding: 40px 45px;
+            box-shadow: 0 15px 35px rgba(38, 59, 64, .09);
+        }
+
+        .verified-header {
+            text-align: center;
+            padding-bottom: 27px;
+            border-bottom: 1px solid #e0e6e3;
+        }
+
+        .check {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #edf6f3;
+            border: 1px solid #cce1da;
+            color: #3e8d81;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 31px;
+            font-weight: bold;
+        }
+
+        .verified h2 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 29px;
+            font-weight: 500;
+            color: #263b40;
+        }
+
+        .intro {
+            margin: 8px 0 0;
+            color: #71807e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .certificate-number {
+            margin-top: 17px;
+            color: #7b8885;
+            font-size: 12px;
+        }
+
+        .certificate-number strong {
+            color: #263b40;
+            font-size: 13px;
+            margin-left: 4px;
+        }
+
+        .record-label {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .record-label span {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #263b40;
+            font-size: 19px;
+        }
+
+        .record-label::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #dfe5e2;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid #dfe5e2;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .item {
+            padding: 16px 18px;
+            background: #ffffff;
+            border-bottom: 1px solid #e4e9e7;
+            font-size: 13px;
+            color: #425451;
+            line-height: 1.5;
+        }
+
+        .item:nth-child(odd) {
+            border-right: 1px solid #e4e9e7;
+        }
+
+        .item:nth-last-child(-n+2) {
+            border-bottom: none;
+        }
+
+        .item strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #7a8885;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .validity {
+            margin-top: 25px;
+            padding: 20px 22px;
+            background: #f0f7f4;
+            border: 1px solid #cfe3dc;
+            border-radius: 8px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #d6e6e1;
+        }
+
+        .status-title {
+            color: #687774;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .status-value {
+            color: #31786d;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 11px;
+            background: #ffffff;
+            border: 1px solid #cfe3dc;
+            border-radius: 20px;
+        }
+
+        .dates {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .date-item span {
+            display: block;
+            color: #71807e;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-bottom: 5px;
+        }
+
+        .date-item strong {
+            color: #263b40;
+            font-size: 13px;
+        }
+
+        .authenticity {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 25px;
+            padding: 16px 18px;
+            background: #f7f9f8;
+            border: 1px solid #e0e6e3;
+            border-radius: 8px;
+        }
+
+        .auth-icon {
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            border-radius: 7px;
+            background: #263b40;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .authenticity strong {
+            display: block;
+            color: #263b40;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .authenticity p {
+            margin: 0;
+            color: #7a8885;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 22px;
+            color: #7b8885;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .footer strong {
+            color: #526461;
+        }
+
+        @media(max-width:650px) {
+
+            .page {
+                padding: 18px 10px 30px;
+            }
+
+            .header {
+                padding: 18px;
+                margin-bottom: 15px;
+            }
+
+            .brand-text h1 {
+                font-size: 22px;
+            }
+
+            .verified {
+                padding: 30px 18px;
+            }
+
+            .verified h2 {
+                font-size: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item:nth-child(odd) {
+                border-right: none;
+            }
+
+            .item:nth-last-child(-n+2) {
+                border-bottom: 1px solid #e4e9e7;
+            }
+
+            .item:last-child {
+                border-bottom: none;
+            }
+
+            .status-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 9px;
+            }
+
+            .dates {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                eV
+            </div>
+
+            <div class="brand-text">
+
+                <h1>
+                    e-Verification
+                </h1>
+
+                <p>
+                    DIGITAL CERTIFICATE VERIFICATION
+                </p>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="verified">
+
+            <div class="verified-header">
+
+                <div class="check">
+                    ✓
+                </div>
+
+                <h2>
+                    Certificate Verified
+                </h2>
+
+                <p class="intro">
+                    This certificate exists in the
+                    e-Maapan verification system.
+                </p>
+
+                <p class="certificate-number">
+
+                    Certificate Number:
+
+                    <strong>
+                        {{ certificate.certificate_number }}
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <div class="record-label">
+                <span>Verification Record</span>
+            </div>
+
+
+            <div class="grid">
+
+                <div class="item">
+
+                    <strong>Instrument ID</strong>
+
+                    {{ certificate.verification.application.instrument.instrument_id }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Instrument Type</strong>
+
+                    {{ certificate.verification.application.instrument.instrument_type.name }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Manufacturer</strong>
+
+                    {{ certificate.verification.application.instrument.manufacturer }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Model</strong>
+
+                    {{ certificate.verification.application.instrument.model_number }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Serial Number</strong>
+
+                    {{ certificate.verification.application.instrument.serial_number }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Capacity</strong>
+
+                    {{ certificate.verification.application.instrument.capacity }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Owner</strong>
+
+                    {{ certificate.verification.application.instrument.owner.get_full_name }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Verification Location</strong>
+
+                    {{ certificate.verification.application.instrument.location }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Verified By</strong>
+
+                    {{ certificate.verification.verified_by.get_full_name }}
+
+                </div>
+
+
+                <div class="item">
+
+                    <strong>Inspection Date</strong>
+
+                    {{ certificate.verification.inspection_date|date:"d M Y" }}
+
+                </div>
+
+            </div>
+
+
+            <div class="validity">
+
+                <div class="status-row">
+
+                    <span class="status-title">
+                        Certificate Status
+                    </span>
+
+                    <span class="status-value">
+                        ✓ {{ certificate.certificate_status }}
+                    </span>
+
+                </div>
+
+
+                <div class="dates">
+
+                    <div class="date-item">
+
+                        <span>
+                            Valid From
+                        </span>
+
+                        <strong>
+                            {{ certificate.valid_from|date:"d M Y" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="date-item">
+
+                        <span>
+                            Valid Until
+                        </span>
+
+                        <strong>
+                            {{ certificate.valid_until|date:"d M Y" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="authenticity">
+
+                <div class="auth-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Authentic Certificate Record
+                    </strong>
+
+                    <p>
+                        This certificate record is available in the
+                        e-Maapan verification database and can be
+                        independently verified using the certificate number.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            <strong>
+                e-Maapan Online Verification System
+            </strong>
+
+            <br>
+
+            This page confirms the certificate record
+            available in the verification database.
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

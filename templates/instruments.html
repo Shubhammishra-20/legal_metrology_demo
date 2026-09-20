@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Instruments | e-Verification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f4ee;
+            color: #24343a;
+            font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .layout {
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 255px;
+            min-height: 100vh;
+            background: #132d3a;
+            color: #dbe5e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 31px 17px;
+            z-index: 100;
+            transform: translateX(-100%);
+            transition:
+                transform .42s cubic-bezier(.22, 1, .36, 1),
+                box-shadow .42s ease;
+            box-shadow: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            box-shadow: 14px 0 45px rgba(18, 40, 49, .16);
+        }
+
+        .sidebar-brand {
+            padding: 0 16px;
+            margin-bottom: 48px;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 19px;
+            font-weight: 650;
+            color: #fff;
+            letter-spacing: .2px;
+        }
+
+        .sidebar-brand p {
+            margin-top: 5px;
+            font-size: 10px;
+            color: #84979e;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-title {
+            padding: 0 16px;
+            color: #6f858e;
+            font-size: 9px;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 11px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            min-height: 44px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #aebec3;
+            border-radius: 9px;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+            transition:
+                background .25s ease,
+                color .25s ease,
+                padding-left .25s ease;
+        }
+
+        .nav a::before {
+            content: "";
+            width: 3px;
+            height: 20px;
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: transparent;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .nav a:hover {
+            background: #1d3c4a;
+            color: #fff;
+            padding-left: 19px;
+        }
+
+        .nav a.active {
+            background: #244555;
+            color: #fff;
+        }
+
+        .nav a.active::before {
+            background: #4a9b8d;
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #79939b;
+            flex-shrink: 0;
+        }
+
+        .nav a.active .nav-icon {
+            color: #64ad9f;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 17px;
+            right: 17px;
+            bottom: 28px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #a9b9be;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 10px 15px;
+            border-radius: 7px;
+            transition: .2s ease;
+        }
+
+        .sidebar-bottom a:hover {
+            background: #1d3c4a;
+            color: #fff;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 34, 42, .20);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity .35s ease,
+                visibility .35s ease;
+            backdrop-filter: blur(1px);
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .content {
+            width: 100%;
+            min-height: 100vh;
+            transform: translateX(0);
+            transition: transform .42s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .content.sidebar-open {
+            transform: translateX(255px);
+        }
+
+        .menu-button {
+            position: absolute;
+            left: 22px;
+            top: 16px;
+            width: 40px;
+            height: 36px;
+            border: 1px solid #d9ddd8;
+            background: rgba(255, 255, 255, .94);
+            border-radius: 9px;
+            cursor: pointer;
+            z-index: 110;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 5px 18px rgba(36, 52, 58, .08);
+            transition:
+                background .25s ease,
+                border-color .25s ease,
+                transform .42s cubic-bezier(.22, 1, .36, 1),
+                box-shadow .25s ease;
+        }
+
+        .menu-button:hover {
+            background: #fff;
+            border-color: #b8c9c3;
+            box-shadow: 0 8px 22px rgba(36, 52, 58, .12);
+        }
+
+        .menu-line {
+            width: 18px;
+            height: 2px;
+            border-radius: 3px;
+            background: #29434b;
+            transition:
+                transform .3s ease,
+                opacity .25s ease;
+        }
+
+        .menu-button.active {
+            transform: translateX(215px);
+        }
+
+        .menu-button.active .menu-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .menu-button.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-button.active .menu-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .topbar {
+            height: 67px;
+            background: rgba(245, 244, 238, .96);
+            border-bottom: 1px solid #e5e2d9;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 4%;
+            position: sticky;
+            top: 0;
+            z-index: 15;
+            backdrop-filter: blur(8px);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 21px;
+        }
+
+        .district {
+            font-size: 9px;
+            color: #879196;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .user-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid #cbd9d5;
+            background: #e9f0ed;
+            color: #41796e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .main {
+            width: 92%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 38px 0 65px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            font-size: 9px;
+            color: #718187;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .page-header h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 37px;
+            line-height: 1.2;
+            font-weight: 400;
+            color: #22343b;
+            letter-spacing: -1px;
+        }
+
+        .page-header p {
+            color: #7c898e;
+            font-size: 12px;
+            margin-top: 9px;
+        }
+
+        .add-btn {
+            height: 38px;
+            padding: 0 17px;
+            border-radius: 20px;
+            border: 1px solid #3e8d81;
+            background: #3e8d81;
+            color: #fff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: .2s ease;
+            white-space: nowrap;
+        }
+
+        .add-btn:hover {
+            background: #347c71;
+            border-color: #347c71;
+            transform: translateY(-1px);
+        }
+
+        .filter-box {
+            background: #fff;
+            border: 1px solid #e4e2da;
+            border-radius: 11px;
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 1fr 200px auto;
+            gap: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #d9ddd8;
+            border-radius: 7px;
+            background: #fafaf8;
+            color: #34474d;
+            font-size: 11px;
+            outline: none;
+            transition:
+                border-color .2s ease,
+                background .2s ease;
+        }
+
+        input::placeholder {
+            color: #9aa4a7;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #74a99f;
+            background: #fff;
+        }
+
+        .filter-btn {
+            height: 40px;
+            border: none;
+            border-radius: 7px;
+            padding: 0 20px;
+            background: #3e8d81;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .filter-btn:hover {
+            background: #347c71;
+        }
+
+        .table-card {
+            background: #fff;
+            border: 1px solid #e4e2da;
+            border-radius: 11px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #f0f4f2;
+            color: #65757b;
+            text-align: left;
+            padding: 14px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-top: 1px solid #ecebe5;
+            font-size: 11px;
+            color: #718087;
+        }
+
+        tbody tr {
+            transition: background .2s ease;
+        }
+
+        tbody tr:hover {
+            background: #fafbf9;
+        }
+
+        td strong {
+            color: #33464d;
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: #f5eee3;
+            color: #99713b;
+        }
+
+        .valid {
+            background: #e7f2ed;
+            color: #3c7967;
+        }
+
+        .expiring {
+            background: #f7eee3;
+            color: #a36b32;
+        }
+
+        .expired,
+        .rejected {
+            background: #f8e8e6;
+            color: #a94d45;
+        }
+
+        .empty {
+            padding: 55px 20px;
+            text-align: center;
+            color: #7b898e;
+        }
+
+        .empty h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: #33464d;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+
+        .empty .add-btn {
+            display: inline-flex;
+        }
+
+        @media (max-width: 1050px) {
+
+            .content.sidebar-open {
+                transform: translateX(220px);
+            }
+
+            .menu-button.active {
+                transform: translateX(180px);
+            }
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr 180px auto;
+            }
+
+        }
+
+        @media (max-width: 760px) {
+
+            .sidebar {
+                width: 245px;
+            }
+
+            .content.sidebar-open {
+                transform: translateX(245px);
+            }
+
+            .menu-button {
+                left: 18px;
+                top: 13px;
+            }
+
+            .menu-button.active {
+                transform: translateX(205px);
+            }
+
+            .topbar {
+                height: 62px;
+                padding: 0 20px 0 76px;
+            }
+
+            .district {
+                display: none;
+            }
+
+            .main {
+                width: 91%;
+                padding-top: 29px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 29px;
+            }
+
+            .page-header p {
+                line-height: 1.6;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .sidebar {
+                width: 255px;
+            }
+
+            .content.sidebar-open {
+                transform: translateX(255px);
+            }
+
+            .menu-button {
+                left: 16px;
+            }
+
+            .menu-button.active {
+                transform: translateX(215px);
+            }
+
+            .topbar {
+                padding-left: 70px;
+            }
+
+            .main {
+                width: 92%;
+            }
+
+            .page-header h1 {
+                font-size: 27px;
+            }
+
+            .filter-box {
+                padding: 15px;
+            }
+
+            input,
+            select,
+            .filter-btn {
+                height: 39px;
+            }
+
+            .table-card {
+                border-radius: 10px;
+            }
+
+            td {
+                padding: 13px;
+            }
+
+            .empty {
+                padding: 45px 15px;
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+
+                <h2>
+                    e-Verification
+                </h2>
+
+                <p>
+                    Owner Workspace
+                </p>
+
+            </div>
+
+            <div class="nav-title">
+                Workspace
+            </div>
+
+            <nav class="nav">
+
+                <a href="{% url 'dashboard' %}">
+
+                    <span class="nav-icon">
+                        ⌘
+                    </span>
+
+                    Overview
+
+                </a>
+
+                <a
+                    href="{% url 'my_instruments' %}"
+                    class="active"
+                >
+
+                    <span class="nav-icon">
+                        ◉
+                    </span>
+
+                    My Instruments
+
+                </a>
+
+                <a href="{% url 'verification_applications' %}">
+
+                    <span class="nav-icon">
+                        □
+                    </span>
+
+                    My Verification Applications
+
+                </a>
+
+                <a href="{% url 'apply_verification' %}">
+
+                    <span class="nav-icon">
+                        ＋
+                    </span>
+
+                    Apply for Verification
+
+                </a>
+
+                <a href="{% url 'add_instrument' %}">
+
+                    <span class="nav-icon">
+                        ＋
+                    </span>
+
+                    Register Instrument
+
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="{% url 'logout' %}">
+
+                    <span class="nav-icon">
+                        ↪
+                    </span>
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <div
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+        ></div>
+
+
+        <div
+            class="content"
+            id="content"
+        >
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+
+            </button>
+
+
+            <header class="topbar">
+
+                <div class="topbar-right">
+
+                    <div class="district">
+                        Owner Workspace
+                    </div>
+
+                    <div class="user-circle">
+                        OW
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <main class="main">
+
+                <div class="page-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            Owner Workspace
+                        </div>
+
+                        <h1>
+                            My Instruments
+                        </h1>
+
+                        <p>
+                            Manage your registered weighing and measuring instruments.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'add_instrument' %}"
+                        class="add-btn"
+                    >
+                        + Register Instrument
+                    </a>
+
+                </div>
+
+
+                <div class="filter-box">
+
+                    <form
+                        method="GET"
+                        class="filter-form"
+                    >
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            placeholder="Search instrument ID, manufacturer, model..."
+                        >
+
+
+                        <select name="status">
+
+                            <option value="">
+                                All Status
+                            </option>
+
+                            {% for value,label in status_choices %}
+
+                                <option
+                                    value="{{ value }}"
+                                    {% if selected_status == value %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <button
+                            type="submit"
+                            class="filter-btn"
+                        >
+                            Search
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <div class="table-card">
+
+                    {% if instruments %}
+
+                        <div class="table-wrapper">
+
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Instrument ID
+                                        </th>
+
+                                        <th>
+                                            Type
+                                        </th>
+
+                                        <th>
+                                            Manufacturer
+                                        </th>
+
+                                        <th>
+                                            Model
+                                        </th>
+
+                                        <th>
+                                            Location
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Next Due
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for instrument in instruments %}
+
+                                        <tr>
+
+                                            <td>
+
+                                                <strong>
+                                                    {{ instrument.instrument_id }}
+                                                </strong>
+
+                                            </td>
+
+                                            <td>
+                                                {{ instrument.instrument_type.name }}
+                                            </td>
+
+                                            <td>
+                                                {{ instrument.manufacturer }}
+                                            </td>
+
+                                            <td>
+                                                {{ instrument.model_number|default:"—" }}
+                                            </td>
+
+                                            <td>
+                                                {{ instrument.location }}
+                                            </td>
+
+                                            <td>
+
+                                                <span
+                                                    class="status
+                                                    {% if instrument.status == 'VALID' %}
+                                                        valid
+                                                    {% elif instrument.status == 'EXPIRING' %}
+                                                        expiring
+                                                    {% elif instrument.status == 'EXPIRED' or instrument.status == 'REJECTED' %}
+                                                        expired
+                                                    {% else %}
+                                                        pending
+                                                    {% endif %}"
+                                                >
+
+                                                    {{ instrument.get_status_display }}
+
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+                                                {{ instrument.next_due_date|default:"—" }}
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty">
+
+                            <h3>
+                                No instruments found
+                            </h3>
+
+                            <p>
+                                Register your first weighing or measuring instrument.
+                            </p>
+
+                            <a
+                                href="{% url 'add_instrument' %}"
+                                class="add-btn"
+                            >
+                                Register Instrument
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const sidebar = document.getElementById("sidebar");
+        const content = document.getElementById("content");
+        const menuButton = document.getElementById("menuButton");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+
+        function openSidebar() {
+
+            sidebar.classList.add("open");
+            content.classList.add("sidebar-open");
+            menuButton.classList.add("active");
+            sidebarOverlay.classList.add("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("open");
+            content.classList.remove("sidebar-open");
+            menuButton.classList.remove("active");
+            sidebarOverlay.classList.remove("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        function toggleSidebar() {
+
+            if (sidebar.classList.contains("open")) {
+
+                closeSidebar();
+
+            } else {
+
+                openSidebar();
+
+            }
+
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            toggleSidebar
+        );
+
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape" &&
+                    sidebar.classList.contains("open")
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        const navLinks = document.querySelectorAll(".nav a");
+
+
+        navLinks.forEach(function(link) {
+
+            link.addEventListener(
+                "click",
+                function() {
+
+                    if (window.innerWidth <= 760) {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1649 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Field Verification | e-Verification</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6f9;
+            color: #1f2937;
+        }
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #047857,
+                #10b981
+            );
+
+            color: white;
+            padding: 22px;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin-top: 6px;
+            opacity: .9;
+            font-size: 13px;
+        }
+
+        .back {
+            background: white;
+            color: #047857;
+            padding: 10px 15px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.06);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #047857;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .detail strong {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 12px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .location-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+
+            padding: 15px;
+            border-radius: 9px;
+        }
+
+        .location-status {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #065f46;
+        }
+
+        .location-btn {
+            border: 0;
+            background: #047857;
+            color: white;
+
+            padding: 10px 15px;
+            border-radius: 7px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 9px;
+            padding: 18px;
+            background: #f8fafc;
+        }
+
+        .submit-box {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .submit-btn {
+            border: 0;
+            background: #047857;
+            color: white;
+
+            padding: 13px 24px;
+
+            border-radius: 8px;
+            cursor: pointer;
+
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background: #065f46;
+        }
+
+        .help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        @media(max-width:700px) {
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .details,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .submit-box {
+                justify-content: stretch;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div>
+
+            <h1>On-Site Digital Verification</h1>
+
+            <p>
+                GATC Inspection & Verification
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'gatc_assigned_applications' %}"
+            class="back"
+        >
+            ← Assigned Applications
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- APPLICATION DETAILS -->
+
+<section class="card">
+
+    <h2>Application & Instrument Details</h2>
+
+    <div class="details">
+
+        <div class="detail">
+
+            <strong>Application Number</strong>
+
+            {{ application.application_number }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Verification Type</strong>
+
+            {{ application.get_verification_type_display }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Instrument ID</strong>
+
+            {{ application.instrument.instrument_id }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Instrument Type</strong>
+
+            {{ application.instrument.instrument_type.name }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Manufacturer</strong>
+
+            {{ application.instrument.manufacturer }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Model Number</strong>
+
+            {{ application.instrument.model_number }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Serial Number</strong>
+
+            {{ application.instrument.serial_number }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Capacity</strong>
+
+            {{ application.instrument.capacity }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Owner</strong>
+
+            {{ application.instrument.owner.get_full_name }}
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>Verification Location</strong>
+
+            {{ application.instrument.location }}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+{% csrf_token %}
+
+
+<!-- INSPECTION -->
+
+<section class="card">
+
+    <h2>Inspection & Verification Result</h2>
+
+
+    <div class="form-grid">
+
+        <div>
+
+            <label>Verification Result</label>
+
+            {{ form.result }}
+
+        </div>
+
+
+        <div>
+
+            <label>Instrument Condition</label>
+
+            {{ form.instrument_condition }}
+
+        </div>
+
+
+        <div class="full">
+
+            <label>Inspection Observation</label>
+
+            {{ form.observation }}
+
+        </div>
+
+
+        <div class="full">
+
+            <label>Measurement / Test Details</label>
+
+            {{ form.measurement_details }}
+
+        </div>
+
+
+        <div>
+
+            <label>Capacity Verified</label>
+
+            {{ form.capacity_verified }}
+
+        </div>
+
+
+        <div>
+
+            <label>Accuracy Observed</label>
+
+            {{ form.accuracy_observed }}
+
+        </div>
+
+
+        <div>
+
+            <label>Seal Condition</label>
+
+            {{ form.seal_condition }}
+
+        </div>
+
+
+        <div>
+
+            <label>Additional Remarks</label>
+
+            {{ form.remarks }}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LOCATION -->
+
+<section class="card">
+
+    <h2>Current Verification Location</h2>
+
+    <div class="location-box">
+
+        <div
+            id="locationStatus"
+            class="location-status"
+        >
+            Current location has not been captured.
+        </div>
+
+        <button
+            type="button"
+            class="location-btn"
+            onclick="getLocation()"
+        >
+            📍 Capture Current Location
+        </button>
+
+        <br><br>
+
+        {{ form.location_address }}
+
+        {{ form.latitude }}
+
+        {{ form.longitude }}
+
+        {{ form.location_accuracy }}
+
+    </div>
+
+</section>
+
+
+<!-- PHOTOS -->
+
+<section class="card">
+
+    <h2>Inspection Photos</h2>
+
+    <div class="file-box">
+
+        <label>
+            Upload Machine / Inspection Photos
+        </label>
+
+        <input
+            type="file"
+            name="photos"
+            accept="image/*"
+            multiple
+            class="form-control"
+        >
+
+        <p class="help">
+            You can select multiple photos.
+            Recommended: machine front, serial number,
+            display, seal/stamp and surrounding location.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- DOCUMENTS -->
+
+<section class="card">
+
+    <h2>Supporting Documents</h2>
+
+    <div class="file-box">
+
+        <label>
+            Upload Supporting Files
+        </label>
+
+        <input
+            type="file"
+            name="documents"
+            multiple
+            class="form-control"
+        >
+
+        <p class="help">
+            Multiple documents can be uploaded.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SUBMIT -->
+
+<section class="card">
+
+    <div class="submit-box">
+
+        <button
+            type="submit"
+            class="submit-btn"
+        >
+            Submit Verification
+        </button>
+
+    </div>
+
+</section>
+
+
+</form>
+
+
+</main>
+
+
+<script>
+
+function getLocation() {
+
+    const status =
+        document.getElementById(
+            "locationStatus"
+        );
+
+    if (!navigator.geolocation) {
+
+        status.innerText =
+            "Geolocation is not supported by this browser.";
+
+        return;
+    }
+
+    status.innerText =
+        "Getting your current location...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+            const accuracy =
+                position.coords.accuracy;
+
+
+            document.getElementById(
+                "id_latitude"
+            ).value = latitude;
+
+
+            document.getElementById(
+                "id_longitude"
+            ).value = longitude;
+
+
+            document.getElementById(
+                "id_location_accuracy"
+            ).value = accuracy;
+
+
+            document.getElementById(
+                "id_location_address"
+            ).value =
+                "GPS: "
+                + latitude.toFixed(7)
+                + ", "
+                + longitude.toFixed(7);
+
+
+            status.innerHTML =
+                "✓ Location captured successfully<br>"
+                + "Latitude: "
+                + latitude.toFixed(7)
+                + "<br>"
+                + "Longitude: "
+                + longitude.toFixed(7)
+                + "<br>"
+                + "Accuracy: approximately "
+                + Math.round(accuracy)
+                + " metres";
+
+        },
+
+        function(error) {
+
+            status.innerText =
+                "Unable to get location. Please allow location permission and try again.";
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Field Verification | e-Maapan
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6f9;
+            color: #1f2937;
+        }
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #047857,
+                    #10b981
+                );
+
+            color: white;
+            padding: 22px;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            opacity: .9;
+            font-size: 13px;
+        }
+
+        .back {
+            background: white;
+            color: #047857;
+
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+
+            margin: 30px auto;
+
+            padding: 0 18px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+
+            color: #047857;
+        }
+
+        .details {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .detail {
+            background: #f8fafc;
+
+            padding: 14px;
+
+            border-radius: 8px;
+        }
+
+        .detail strong {
+            display: block;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+            margin-bottom: 7px;
+        }
+
+        .form-control,
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+        textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+        .location-box {
+
+            background: #ecfdf5;
+
+            border: 1px solid #a7f3d0;
+
+            padding: 15px;
+
+            border-radius: 9px;
+        }
+
+        .location-status {
+
+            font-size: 13px;
+
+            margin-bottom: 12px;
+
+            color: #065f46;
+        }
+
+        .location-btn {
+
+            border: 0;
+
+            background: #047857;
+
+            color: white;
+
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .location-btn:hover {
+            background: #065f46;
+        }
+
+        .file-box {
+
+            border: 2px dashed #cbd5e1;
+
+            border-radius: 9px;
+
+            padding: 18px;
+
+            background: #f8fafc;
+        }
+
+        .help {
+
+            font-size: 12px;
+
+            color: #6b7280;
+
+            margin-top: 6px;
+        }
+
+        .submit-box {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+        }
+
+        .submit-btn {
+
+            border: 0;
+
+            background: #047857;
+
+            color: white;
+
+            padding: 13px 24px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background: #065f46;
+        }
+
+        /* ERROR */
+
+        .error-box {
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            color: #991b1b;
+
+            padding: 15px;
+
+            border-radius: 9px;
+
+            margin-bottom: 20px;
+        }
+
+        .field-error {
+
+            color: #dc2626;
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+        .success-box {
+
+            background: #ecfdf5;
+
+            border: 1px solid #a7f3d0;
+
+            color: #065f46;
+
+            padding: 15px;
+
+            border-radius: 9px;
+
+            margin-bottom: 20px;
+        }
+
+        @media(max-width:700px) {
+
+            .header-inner {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .details,
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+
+                grid-column: auto;
+            }
+
+            .submit-btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div>
+
+            <h1>
+                On-Site Digital Verification
+            </h1>
+
+            <p>
+                GATC Inspection & Verification
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'gatc_assigned_applications' %}"
+            class="back"
+        >
+            ← Assigned Applications
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="success-box">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% if form.errors %}
+
+        <div class="error-box">
+
+            <strong>
+                Please correct the following errors:
+            </strong>
+
+            <ul>
+
+                {% for field in form %}
+
+                    {% for error in field.errors %}
+
+                        <li>
+                            <strong>
+                                {{ field.label }}:
+                            </strong>
+                            {{ error }}
+                        </li>
+
+                    {% endfor %}
+
+                {% endfor %}
+
+                {% for error in form.non_field_errors %}
+
+                    <li>
+                        {{ error }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- APPLICATION DETAILS -->
+
+    <section class="card">
+
+        <h2>
+            Application & Instrument Details
+        </h2>
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <strong>
+                    Application Number
+                </strong>
+
+                {{ application.application_number }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Verification Type
+                </strong>
+
+                {{ application.get_verification_type_display }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Instrument ID
+                </strong>
+
+                {{ application.instrument.instrument_id }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Instrument Type
+                </strong>
+
+                {{ application.instrument.instrument_type.name }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Manufacturer
+                </strong>
+
+                {{ application.instrument.manufacturer }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Model Number
+                </strong>
+
+                {{ application.instrument.model_number }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Serial Number
+                </strong>
+
+                {{ application.instrument.serial_number }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Capacity
+                </strong>
+
+                {{ application.instrument.capacity }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Owner
+                </strong>
+
+                {{ application.instrument.owner.get_full_name }}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Verification Location
+                </strong>
+
+                {{ application.instrument.location }}
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+
+        <!-- INSPECTION -->
+
+        <section class="card">
+
+            <h2>
+                Inspection & Verification Result
+            </h2>
+
+
+            <div class="form-grid">
+
+
+                <div>
+
+                    <label>
+                        Verification Result
+                    </label>
+
+                    {{ form.result }}
+
+                    {% if form.result.errors %}
+
+                        <div class="field-error">
+                            {{ form.result.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Instrument Condition
+                    </label>
+
+                    {{ form.instrument_condition }}
+
+                    {% if form.instrument_condition.errors %}
+
+                        <div class="field-error">
+                            {{ form.instrument_condition.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="full">
+
+                    <label>
+                        Inspection Observation
+                    </label>
+
+                    {{ form.observation }}
+
+                    {% if form.observation.errors %}
+
+                        <div class="field-error">
+                            {{ form.observation.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="full">
+
+                    <label>
+                        Measurement / Test Details
+                    </label>
+
+                    {{ form.measurement_details }}
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Capacity Verified
+                    </label>
+
+                    {{ form.capacity_verified }}
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Accuracy Observed
+                    </label>
+
+                    {{ form.accuracy_observed }}
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Seal Condition
+                    </label>
+
+                    {{ form.seal_condition }}
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Additional Remarks
+                    </label>
+
+                    {{ form.remarks }}
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LOCATION -->
+
+        <section class="card">
+
+            <h2>
+                Current Verification Location
+            </h2>
+
+
+            <div class="location-box">
+
+                <div
+                    id="locationStatus"
+                    class="location-status"
+                >
+                    Current location has not been captured.
+                </div>
+
+
+                <button
+                    type="button"
+                    class="location-btn"
+                    onclick="getLocation()"
+                >
+                    📍 Capture Current Location
+                </button>
+
+
+                <br>
+                <br>
+
+
+                {{ form.location_address }}
+
+                {{ form.latitude }}
+
+                {{ form.longitude }}
+
+                {{ form.location_accuracy }}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PHOTOS -->
+
+        <section class="card">
+
+            <h2>
+                Inspection Photos
+            </h2>
+
+
+            <div class="file-box">
+
+                <label>
+                    Upload Machine / Inspection Photos
+                </label>
+
+
+                <input
+                    type="file"
+                    name="photos"
+                    accept="image/*"
+                    multiple
+                    class="form-control"
+                >
+
+
+                <p class="help">
+
+                    Select multiple photographs.
+
+                    Machine front, serial number,
+                    display, seal/stamp and location
+                    photographs are recommended.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DOCUMENTS -->
+
+        <section class="card">
+
+            <h2>
+                Supporting Documents
+            </h2>
+
+
+            <div class="file-box">
+
+                <label>
+                    Upload Supporting Files
+                </label>
+
+
+                <input
+                    type="file"
+                    name="documents"
+                    multiple
+                    class="form-control"
+                >
+
+
+                <p class="help">
+                    You can select multiple documents.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SUBMIT -->
+
+        <section class="card">
+
+            <div class="submit-box">
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    ✓ Submit Verification
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </form>
+
+</main>
+
+
+<script>
+
+function getLocation() {
+
+    const status =
+        document.getElementById(
+            "locationStatus"
+        );
+
+
+    if (!navigator.geolocation) {
+
+        status.innerText =
+            "Geolocation is not supported by this browser.";
+
+        return;
+    }
+
+
+    status.innerText =
+        "Getting your current location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+            const accuracy =
+                position.coords.accuracy;
+
+
+            const latitudeField =
+                document.getElementById(
+                    "id_latitude"
+                );
+
+            const longitudeField =
+                document.getElementById(
+                    "id_longitude"
+                );
+
+            const accuracyField =
+                document.getElementById(
+                    "id_location_accuracy"
+                );
+
+            const addressField =
+                document.getElementById(
+                    "id_location_address"
+                );
+
+
+            if (latitudeField) {
+                latitudeField.value = latitude.toFixed(7);
+            }
+
+            if (longitudeField) {
+                longitudeField.value = longitude.toFixed(7);
+            }
+
+            if (accuracyField) {
+                accuracyField.value = accuracy.toFixed(2);
+            }
+
+            if (addressField) {
+
+                addressField.value =
+                    "GPS: "
+                    + latitude.toFixed(7)
+                    + ", "
+                    + longitude.toFixed(7);
+
+            }
+
+
+            status.innerHTML =
+
+                "✓ Location captured successfully"
+                + "<br>"
+                + "Latitude: "
+                + latitude.toFixed(7)
+                + "<br>"
+                + "Longitude: "
+                + longitude.toFixed(7)
+                + "<br>"
+                + "Accuracy: approximately "
+                + Math.round(accuracy)
+                + " metres";
+
+        },
+
+
+        function(error) {
+
+            status.innerHTML =
+                "❌ Unable to get location."
+                + "<br>"
+                + "Please allow location permission "
+                + "and click the button again.";
+
+        },
+
+
+        {
+            enableHighAccuracy: true,
+
+            timeout: 15000,
+
+            maximumAge: 0
+        }
+
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | e-Verification</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background: #f5f4ee;
+
+            color: #24343a;
+
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Geneva,
+                Verdana,
+                Arial,
+                sans-serif;
+
+            padding: 35px 25px;
+
+            position: relative;
+
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 430px;
+            height: 430px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(62, 141, 129, 0.07);
+
+            top: -190px;
+            left: -160px;
+
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(36, 52, 58, 0.045);
+
+            right: -190px;
+            bottom: -260px;
+
+            pointer-events: none;
+        }
+
+        .page {
+            width: 100%;
+
+            max-width: 1120px;
+
+            margin: auto;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .register-box {
+            width: 100%;
+
+            background: #ffffff;
+
+            border: 1px solid #e2e1da;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(36, 52, 58, 0.12);
+
+            overflow: hidden;
+
+            display: grid;
+
+            grid-template-columns:
+                0.88fr 1.12fr;
+        }
+
+        .left-panel {
+            position: relative;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #24343a 0%,
+                    #293f45 55%,
+                    #31534f 100%
+                );
+
+            color: #ffffff;
+
+            padding: 48px 45px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: "";
+
+            position: absolute;
+
+            width: 320px;
+            height: 320px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            border-radius: 50%;
+
+            right: -155px;
+            top: -110px;
+        }
+
+        .left-panel::after {
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+            height: 250px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+
+            border-radius: 50%;
+
+            left: -130px;
+            bottom: -130px;
+        }
+
+        .brand {
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .brand-top {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 47px;
+            height: 47px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #3e8d81;
+
+            border-radius: 11px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 8px 20px
+                rgba(0, 0, 0, 0.15);
+        }
+
+        .brand-name {
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 22px;
+
+            font-weight: 600;
+        }
+
+        .brand-subtitle {
+            margin:
+                6px 0 0 59px;
+
+            color:
+                rgba(255, 255, 255, 0.58);
+
+            font-size: 10px;
+
+            letter-spacing: 0.8px;
+
+            text-transform: uppercase;
+        }
+
+        .intro {
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 55px;
+        }
+
+        .intro-label {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #8fd2c6;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .intro-label span {
+            width: 23px;
+            height: 1px;
+
+            background: #3e8d81;
+        }
+
+        .intro h1 {
+            margin: 16px 0 0;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 39px;
+
+            line-height: 1.15;
+
+            font-weight: 500;
+
+            letter-spacing: -0.8px;
+        }
+
+        .intro h1 strong {
+            color: #8fd2c6;
+
+            font-weight: 500;
+        }
+
+        .intro p {
+            margin: 18px 0 0;
+
+            color:
+                rgba(255, 255, 255, 0.66);
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+        .steps {
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 35px;
+        }
+
+        .step {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            width: 29px;
+            height: 29px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(62, 141, 129, 0.20);
+
+            border:
+                1px solid
+                rgba(143, 210, 198, 0.18);
+
+            color: #9bd6cd;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .step-text strong {
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+        .step-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color:
+                rgba(255, 255, 255, 0.43);
+
+            font-size: 9px;
+        }
+
+        .left-footer {
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 30px;
+
+            color:
+                rgba(255, 255, 255, 0.40);
+
+            font-size: 9px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #72c5b8;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(114, 197, 184, 0.10);
+        }
+
+        .right-panel {
+            padding: 45px 52px 35px;
+
+            background: #ffffff;
+        }
+
+        .form-header {
+            margin-bottom: 26px;
+        }
+
+        .form-header small {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #3e8d81;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .form-header h2 {
+            margin: 0;
+
+            color: #24343a;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 29px;
+
+            font-weight: 500;
+
+            letter-spacing: -0.5px;
+        }
+
+        .form-header p {
+            margin: 8px 0 0;
+
+            color: #7b8588;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .general-error {
+            margin-bottom: 19px;
+
+            padding: 12px 14px;
+
+            background: #fff3f1;
+
+            border:
+                1px solid
+                #efd5d1;
+
+            border-left:
+                3px solid
+                #b84035;
+
+            border-radius: 7px;
+
+            color: #a02d24;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            column-gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .full-width {
+            grid-column:
+                1 / -1;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #34444a;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+
+            padding: 11px 13px;
+
+            background: #fbfbf9;
+
+            border:
+                1px solid
+                #d8d9d4;
+
+            border-radius: 8px;
+
+            color: #24343a;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        textarea {
+            min-height: 82px;
+
+            resize: vertical;
+        }
+
+        input:hover,
+        textarea:hover {
+            border-color: #bfc5c1;
+        }
+
+        input:focus,
+        textarea:focus {
+            background: #ffffff;
+
+            border-color: #3e8d81;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(62, 141, 129, 0.10);
+        }
+
+        .errorlist {
+            margin: 5px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+
+            color: #b33a31;
+
+            font-size: 10px;
+
+            line-height: 1.4;
+        }
+
+        .password-note {
+            margin-top: -3px;
+
+            margin-bottom: 16px;
+
+            color: #919898;
+
+            font-size: 9px;
+        }
+
+        .button-row {
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+
+            padding: 13px 16px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #3e8d81;
+
+            color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 16px
+                rgba(62, 141, 129, 0.18);
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            background: #347b70;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 20px
+                rgba(62, 141, 129, 0.22);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .login-link {
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid
+                #ecebe6;
+
+            text-align: center;
+
+            color: #858d90;
+
+            font-size: 11px;
+        }
+
+        .login-link a {
+            color: #3e8d81;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-info {
+            margin-top: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            color: #9a9f9f;
+
+            font-size: 9px;
+        }
+
+        .bottom-info-icon {
+            width: 20px;
+            height: 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 6px;
+
+            background: #e7f1ee;
+
+            color: #3e8d81;
+
+            font-size: 9px;
+        }
+
+        .copyright {
+            margin-top: 10px;
+
+            text-align: center;
+
+            color: #b0b3b1;
+
+            font-size: 8px;
+        }
+
+        @media (max-width: 900px) {
+
+            body {
+                padding: 25px 18px;
+            }
+
+            .register-box {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                padding: 38px 40px;
+            }
+
+            .intro {
+                margin-top: 35px;
+            }
+
+            .intro h1 {
+                font-size: 35px;
+            }
+
+            .steps {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+                gap: 12px;
+
+                margin-top: 28px;
+            }
+
+            .step {
+                margin-bottom: 0;
+            }
+
+            .left-footer {
+                margin-top: 28px;
+            }
+
+            .right-panel {
+                padding: 40px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 14px 10px;
+            }
+
+            .register-box {
+                border-radius: 13px;
+            }
+
+            .left-panel {
+                padding: 30px 24px;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+
+                font-size: 20px;
+            }
+
+            .brand-name {
+                font-size: 20px;
+            }
+
+            .brand-subtitle {
+                margin-left: 55px;
+
+                font-size: 8px;
+            }
+
+            .intro {
+                margin-top: 32px;
+            }
+
+            .intro h1 {
+                font-size: 30px;
+            }
+
+            .intro p {
+                font-size: 12px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+            .step {
+                margin-bottom: 0;
+            }
+
+            .right-panel {
+                padding: 30px 22px 25px;
+            }
+
+            .form-header h2 {
+                font-size: 26px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="register-box">
+
+        <div class="left-panel">
+
+            <div>
+
+                <div class="brand">
+
+                    <div class="brand-top">
+
+                        <div class="brand-icon">
+                            e
+                        </div>
+
+                        <div class="brand-name">
+                            e-Verification
+                        </div>
+
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Legal Metrology · Digital Services
+                    </div>
+
+                </div>
+
+
+                <div class="intro">
+
+                    <div class="intro-label">
+
+                        <span></span>
+
+                        Owner Registration
+
+                    </div>
+
+
+                    <h1>
+
+                        Create your
+                        <strong>workspace.</strong>
+
+                    </h1>
+
+
+                    <p>
+
+                        Register as an instrument owner and manage
+                        your weighing and measuring instrument
+                        verification services from one place.
+
+                    </p>
+
+
+                    <div class="steps">
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                01
+                            </div>
+
+                            <div class="step-text">
+
+                                <strong>
+                                    Create account
+                                </strong>
+
+                                <span>
+                                    Enter your basic details
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                02
+                            </div>
+
+                            <div class="step-text">
+
+                                <strong>
+                                    Register instruments
+                                </strong>
+
+                                <span>
+                                    Add your instruments
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                03
+                            </div>
+
+                            <div class="step-text">
+
+                                <strong>
+                                    Apply for verification
+                                </strong>
+
+                                <span>
+                                    Submit applications online
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="left-footer">
+
+                <span class="status-dot"></span>
+
+                Secure digital verification service
+
+            </div>
+
+        </div>
+
+
+        <div class="right-panel">
+
+            <div class="form-header">
+
+                <small>
+                    Instrument owner
+                </small>
+
+                <h2>
+                    Create your account
+                </h2>
+
+                <p>
+                    Enter your information below to register
+                    for the e-Verification service.
+                </p>
+
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div class="general-error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Username
+                        </label>
+
+                        {{ form.username }}
+
+                        {{ form.username.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        {{ form.email }}
+
+                        {{ form.email.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            First Name
+                        </label>
+
+                        {{ form.first_name }}
+
+                        {{ form.first_name.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Last Name
+                        </label>
+
+                        {{ form.last_name }}
+
+                        {{ form.last_name.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        {{ form.phone }}
+
+                        {{ form.phone.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Organization / Business
+                        </label>
+
+                        {{ form.organization }}
+
+                        {{ form.organization.errors }}
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Address
+                        </label>
+
+                        {{ form.address }}
+
+                        {{ form.address.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        {{ form.password }}
+
+                        {{ form.password.errors }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Confirm Password
+                        </label>
+
+                        {{ form.confirm_password }}
+
+                        {{ form.confirm_password.errors }}
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="password-note">
+                    Use a strong password that you do not use elsewhere.
+                </div>
+
+
+                <div class="button-row">
+
+                    <button type="submit">
+
+                        Create Owner Account
+
+                        <span style="margin-left: 7px;">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+            </div>
+
+
+            <div class="bottom-info">
+
+                <div class="bottom-info-icon">
+                    ✓
+                </div>
+
+                Your information is securely handled.
+
+            </div>
+
+
+            <div class="copyright">
+
+                Legal Metrology · Online Verification System
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

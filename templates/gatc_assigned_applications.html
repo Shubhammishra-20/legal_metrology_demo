@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Applications | e-Verification</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eeeee8;
+            color: #263b40;
+        }
+
+        .header {
+            background: #263b40;
+            color: white;
+            padding: 22px 25px;
+            border-bottom: 4px solid #3e8d81;
+        }
+
+        .header-inner {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            background: #3e8d81;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .brand-text h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .brand-text p {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #cbd7d5;
+        }
+
+        .logout {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255,255,255,.22);
+            padding: 10px 17px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        .logout:hover {
+            background: #3e8d81;
+            border-color: #3e8d81;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 38px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title-label {
+            color: #3e8d81;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .title h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #263b40;
+        }
+
+        .title p {
+            margin-top: 7px;
+            color: #71807e;
+            font-size: 13px;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #dce3e0;
+            border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(38, 59, 64, .08);
+            overflow: hidden;
+        }
+
+        .table-top {
+            padding: 19px 22px;
+            border-bottom: 1px solid #e1e6e4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .table-top h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #263b40;
+        }
+
+        .table-top span {
+            font-size: 11px;
+            color: #788682;
+            background: #f2f6f4;
+            border: 1px solid #e0e7e4;
+            padding: 7px 11px;
+            border-radius: 20px;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f7f5;
+            color: #526461;
+            padding: 14px 15px;
+            text-align: left;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            font-weight: bold;
+            border-bottom: 1px solid #dfe6e3;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #e7ebe9;
+            color: #536360;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: .18s;
+        }
+
+        tbody tr:hover {
+            background: #f8faf9;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td strong {
+            color: #263b40;
+            font-size: 12px;
+        }
+
+        .instrument-id {
+            color: #263b40;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .sub-text {
+            color: #87928f;
+            font-size: 11px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #edf6f3;
+            border: 1px solid #d0e4de;
+            color: #31786d;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .verify-btn {
+            display: inline-block;
+            background: #3e8d81;
+            color: white;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: .2s;
+        }
+
+        .verify-btn:hover {
+            background: #2f756b;
+            transform: translateY(-1px);
+        }
+
+        .completed {
+            color: #71807e;
+            font-size: 11px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 75px 20px;
+        }
+
+        .empty-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 17px;
+            border-radius: 50%;
+            background: #edf4f1;
+            color: #3e8d81;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .empty h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 21px;
+            font-weight: 500;
+            color: #263b40;
+        }
+
+        .empty p {
+            margin-top: 7px;
+            color: #7a8885;
+            font-size: 12px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 22px;
+            color: #87928f;
+            font-size: 11px;
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 18px 15px;
+            }
+
+            .header-inner {
+                align-items: flex-start;
+            }
+
+            .brand-mark {
+                width: 40px;
+                height: 40px;
+            }
+
+            .brand-text h1 {
+                font-size: 22px;
+            }
+
+            .brand-text p {
+                font-size: 10px;
+            }
+
+            .logout {
+                padding: 9px 12px;
+                font-size: 11px;
+            }
+
+            .container {
+                margin: 28px auto;
+                padding: 0 12px;
+            }
+
+            .title h2 {
+                font-size: 24px;
+            }
+
+            .table-top {
+                padding: 16px;
+            }
+
+            .table-top span {
+                display: none;
+            }
+
+            .table-card {
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-inner {
+                flex-direction: column;
+            }
+
+            .logout {
+                width: 100%;
+                text-align: center;
+            }
+
+            .title h2 {
+                font-size: 22px;
+            }
+
+            .title p {
+                line-height: 1.6;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                eV
+            </div>
+
+            <div class="brand-text">
+                <h1>e-Verification</h1>
+
+                <p>
+                    GATC Field Verification Portal
+                </p>
+            </div>
+
+        </div>
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+<main class="container">
+
+    <div class="title">
+
+        <div class="title-label">
+            Government Approved Testing Centre
+        </div>
+
+        <h2>
+            Assigned Verification Applications
+        </h2>
+
+        <p>
+            Visit the instrument owner and complete
+            the on-site digital verification.
+        </p>
+
+    </div>
+
+    <div class="table-card">
+
+        <div class="table-top">
+
+            <h3>
+                Verification Assignments
+            </h3>
+
+            {% if applications %}
+                <span>
+                    Assigned Applications
+                </span>
+            {% endif %}
+
+        </div>
+
+        {% if applications %}
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Application</th>
+                        <th>Instrument</th>
+                        <th>Type</th>
+                        <th>Owner</th>
+                        <th>Location</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for application in applications %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ application.application_number }}
+                            </strong>
+                        </td>
+
+                        <td>
+
+                            <div class="instrument-id">
+                                {{ application.instrument.instrument_id }}
+                            </div>
+
+                            <div class="sub-text">
+                                {{ application.instrument.instrument_type.name }}
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ application.get_verification_type_display }}
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                {{ application.instrument.owner.get_full_name }}
+                            </strong>
+
+                            <div class="sub-text">
+                                {{ application.instrument.owner.username }}
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ application.instrument.location }}
+                        </td>
+
+                        <td>
+
+                            {% if application.scheduled_date %}
+
+                                {{ application.scheduled_date|date:"d M Y" }}
+
+                                {% if application.scheduled_time %}
+                                    <div class="sub-text">
+                                        {{ application.scheduled_time|time:"h:i A" }}
+                                    </div>
+                                {% endif %}
+
+                            {% else %}
+
+                                <span class="sub-text">
+                                    Not scheduled
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status">
+                                {{ application.get_status_display }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {% if application.status == 'SCHEDULED' or application.status == 'IN_PROGRESS' %}
+
+                            <a
+                                href="{% url 'start_verification' application.id %}"
+                                class="verify-btn"
+                            >
+                                Start Verification
+                            </a>
+
+                            {% else %}
+
+                            <span class="completed">
+                                Completed
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ✓
+            </div>
+
+            <h3>
+                No applications assigned
+            </h3>
+
+            <p>
+                New verification assignments will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="footer-note">
+        e-Verification System · Online Verification System for Weighing &amp; Measuring Instruments
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Review Application | e-Verification</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eeeee8;
+            color: #263b40;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: #263b40;
+            color: white;
+            z-index: 1000;
+            transition: left .3s ease;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, .15);
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .sidebar-header h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 24px;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 13px;
+            color: #b8c8c8;
+        }
+
+        .nav {
+            padding: 18px 12px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 5px;
+            border-radius: 7px;
+            color: #dce6e6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: .2s ease;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, .08);
+            color: white;
+        }
+
+        .nav a.active {
+            background: #3e8d81;
+            color: white;
+        }
+
+        .nav .logout-link {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 0;
+            padding-top: 20px;
+        }
+
+        /* ================= OVERLAY ================= */
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 35, 38, .18);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: 900;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* ================= MENU BUTTON ================= */
+
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 7px;
+            background: #263b40;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left .3s ease,
+                        background .2s ease,
+                        box-shadow .2s ease;
+        }
+
+        .menu-button:hover {
+            background: #314b50;
+        }
+
+        .menu-button.active {
+            left: 320px;
+            background: #3e8d81;
+            color: white;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .20);
+        }
+
+        .menu-button .close {
+            display: none;
+            font-size: 27px;
+            line-height: 1;
+        }
+
+        .menu-button.active .menu {
+            display: none;
+        }
+
+        .menu-button.active .close {
+            display: block;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            min-height: 100vh;
+            transition: transform .3s ease;
+        }
+
+        .page.sidebar-open {
+            transform: translateX(300px);
+        }
+
+        /* ================= TOP HEADER ================= */
+
+        .top-header {
+            background: #f7f7f3;
+            border-bottom: 1px solid #dfe4e1;
+            padding: 25px 35px 22px 85px;
+        }
+
+        .top-header h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #263b40;
+            margin-bottom: 6px;
+        }
+
+        .top-header p {
+            color: #718080;
+            font-size: 14px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1150px;
+            margin: 30px auto;
+            padding: 0 25px 50px;
+        }
+
+        /* ================= BACK BUTTON ================= */
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 22px;
+            color: #3e8d81;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back:hover {
+            color: #2e7168;
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5e3;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(38, 59, 64, .06);
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e4e8e6;
+            background: #f7f8f5;
+        }
+
+        .card-header h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #263b40;
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* ================= DETAILS ================= */
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .detail {
+            padding: 16px;
+            background: #f7f8f5;
+            border: 1px solid #e2e6e4;
+            border-radius: 8px;
+        }
+
+        .detail label {
+            display: block;
+            color: #738181;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .detail strong {
+            color: #263b40;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .application-number {
+            color: #3e8d81 !important;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #35494d;
+        }
+
+        .form-control,
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d4dcda;
+            border-radius: 7px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            background: white;
+            color: #263b40;
+            transition: border .2s ease,
+                        box-shadow .2s ease;
+        }
+
+        .form-control:focus,
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3e8d81;
+            box-shadow: 0 0 0 3px rgba(62, 141, 129, .10);
+        }
+
+        textarea.form-control,
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .error {
+            color: #c44545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e8e6;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 21px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: .2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #3e8d81;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #347a70;
+            box-shadow: 0 4px 12px rgba(62, 141, 129, .18);
+        }
+
+        .btn-secondary {
+            background: #e7ebe9;
+            color: #35494d;
+        }
+
+        .btn-secondary:hover {
+            background: #dce2df;
+        }
+
+        /* ================= SMALL INFO ================= */
+
+        .review-note {
+            margin-bottom: 20px;
+            padding: 13px 15px;
+            background: #f2f6f4;
+            border: 1px solid #dce6e2;
+            border-radius: 7px;
+            color: #607171;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .details,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .top-header {
+                padding-left: 75px;
+            }
+
+            .container {
+                padding: 0 18px 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                width: 235px;
+                left: -235px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .page.sidebar-open {
+                transform: translateX(235px);
+            }
+
+            .menu-button {
+                top: 15px;
+                left: 15px;
+            }
+
+            .menu-button.active {
+                left: 195px;
+            }
+
+            .top-header {
+                padding: 75px 18px 20px;
+            }
+
+            .top-header h1 {
+                font-size: 23px;
+            }
+
+            .top-header p {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 12px 35px;
+            }
+
+            .card {
+                border-radius: 8px;
+            }
+
+            .card-header {
+                padding: 17px 18px;
+            }
+
+            .card-header h2 {
+                font-size: 18px;
+            }
+
+            .card-body {
+                padding: 18px;
+            }
+
+            .details {
+                gap: 12px;
+            }
+
+            .detail {
+                padding: 14px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <h2>
+            e-Verification
+        </h2>
+
+        <p>
+            LMO Workspace
+        </p>
+
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="{% url 'lmo_dashboard' %}">
+            Overview
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#applications">
+            Verification Applications
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#pending">
+            Pending Review
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#scheduled">
+            Scheduled
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#progress">
+            In Progress
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#verified">
+            Verified Records
+        </a>
+
+        <a href="{% url 'lmo_dashboard' %}#applications"
+           class="active">
+            Review Applications
+        </a>
+
+        <a href="{% url 'logout' %}"
+           class="logout-link">
+            Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= OVERLAY ================= -->
+
+<div class="overlay"
+     id="sidebarOverlay">
+</div>
+
+
+<!-- ================= MENU BUTTON ================= -->
+
+<button class="menu-button"
+        id="menuButton"
+        aria-label="Open navigation"
+        aria-expanded="false">
+
+    <span class="menu">
+        ☰
+    </span>
+
+    <span class="close">
+        ×
+    </span>
+
+</button>
+
+
+<!-- ================= PAGE ================= -->
+
+<div class="page"
+     id="page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <h1>
+            Review Application
+        </h1>
+
+        <p>
+            LMO Application Review &amp; Scheduling
+        </p>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <a href="{% url 'lmo_dashboard' %}"
+           class="back">
+
+            ← Back to LMO Dashboard
+
+        </a>
+
+
+        <!-- ================= APPLICATION DETAILS ================= -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Application Details
+                </h2>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="details">
+
+
+                    <div class="detail">
+
+                        <label>
+                            Application Number
+                        </label>
+
+                        <strong class="application-number">
+
+                            {{ application.application_number }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Application Date
+                        </label>
+
+                        <strong>
+
+                            {{ application.application_date|date:"d M Y, h:i A" }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Owner
+                        </label>
+
+                        <strong>
+
+                            {{ application.instrument.owner.username }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Verification Type
+                        </label>
+
+                        <strong>
+
+                            {{ application.get_verification_type_display }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Instrument ID
+                        </label>
+
+                        <strong>
+
+                            {{ application.instrument.instrument_id }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Instrument Type
+                        </label>
+
+                        <strong>
+
+                            {{ application.instrument.instrument_type.name }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Manufacturer
+                        </label>
+
+                        <strong>
+
+                            {{ application.instrument.manufacturer }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <label>
+                            Serial Number
+                        </label>
+
+                        <strong>
+
+                            {{ application.instrument.serial_number }}
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ASSIGNMENT ================= -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Assign &amp; Schedule Verification
+                </h2>
+
+            </div>
+
+
+            <div class="card-body">
+
+
+                <div class="review-note">
+
+                    Review the application details and assign the
+                    appropriate LMO and GATC before scheduling
+                    the verification activity.
+
+                </div>
+
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+
+                    {% if form.non_field_errors %}
+
+                        <div class="error"
+                             style="margin-bottom: 15px;">
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="form-grid">
+
+
+                        <!-- ASSIGN LMO -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Assign LMO
+                            </label>
+
+                            {{ form.assigned_lmo }}
+
+                            {% for error in form.assigned_lmo.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- ASSIGN GATC -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Assign GATC
+                            </label>
+
+                            {{ form.assigned_gatc }}
+
+                            {% for error in form.assigned_gatc.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Verification Date
+                            </label>
+
+                            {{ form.scheduled_date }}
+
+                            {% for error in form.scheduled_date.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- TIME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Verification Time
+                            </label>
+
+                            {{ form.scheduled_time }}
+
+                            {% for error in form.scheduled_time.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Status
+                            </label>
+
+                            {{ form.status }}
+
+                            {% for error in form.status.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- REMARKS -->
+
+                        <div class="form-group full">
+
+                            <label>
+                                Assignment Remarks
+                            </label>
+
+                            {{ form.assignment_remarks }}
+
+                            {% for error in form.assignment_remarks.errors %}
+
+                                <span class="error">
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ================= BUTTONS ================= -->
+
+                    <div class="actions">
+
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            Save &amp; Schedule
+
+                        </button>
+
+
+                        <a href="{% url 'lmo_dashboard' %}"
+                           class="btn btn-secondary">
+
+                            Cancel
+
+                        </a>
+
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- ================= SIDEBAR SCRIPT ================= -->
+
+<script>
+
+    const menuButton = document.getElementById("menuButton");
+    const sidebar = document.getElementById("sidebar");
+    const page = document.getElementById("page");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+
+    function openSidebar() {
+
+        sidebar.classList.add("open");
+
+        page.classList.add("sidebar-open");
+
+        menuButton.classList.add("active");
+
+        sidebarOverlay.classList.add("show");
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+
+    function closeSidebar() {
+
+        sidebar.classList.remove("open");
+
+        page.classList.remove("sidebar-open");
+
+        menuButton.classList.remove("active");
+
+        sidebarOverlay.classList.remove("show");
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    function toggleSidebar() {
+
+        if (sidebar.classList.contains("open")) {
+
+            closeSidebar();
+
+        } else {
+
+            openSidebar();
+
+        }
+
+    }
+
+
+    menuButton.addEventListener(
+        "click",
+        toggleSidebar
+    );
+
+
+    sidebarOverlay.addEventListener(
+        "click",
+        closeSidebar
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    const navLinks =
+        document.querySelectorAll(".nav a");
+
+
+    navLinks.forEach(function(link) {
+
+        link.addEventListener(
+            "click",
+            function() {
+
+                if (window.innerWidth <= 600) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
