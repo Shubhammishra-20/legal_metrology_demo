@@ -1,0 +1,2 @@
+Digital Verification & Management System for Weighing and Measuring Instruments — SIH 2026
+A web-based platform developed for Smart India Hackathon 2026 to streamline the verification, certification, and management of weighing and measuring instruments. The system enables secure role-based access, digital record management, verification workflows, and efficient monitoring using Django, MongoDB/PostgreSQL, JWT authentication, and a structured backend architecture.
